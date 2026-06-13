@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { CalendarioAnalistaClient } from "./CalendarioAnalistaClient";
+import { getMockTeamAppointments } from "@/lib/mock-appointments";
 
 export default async function CalendarioAnalistaPage() {
   const supabase = await createClient();
@@ -26,7 +27,7 @@ export default async function CalendarioAnalistaPage() {
 
   // Turnos de todos los médicos (hoy en adelante)
   const today = new Date().toISOString().split("T")[0];
-  const { data: appointments } = medicoIds.length
+  const { data: realAppointments } = medicoIds.length
     ? await supabase
         .from("appointments")
         .select("*")
@@ -34,6 +35,11 @@ export default async function CalendarioAnalistaPage() {
         .gte("fecha_inicio", today + "T00:00:00")
         .order("fecha_inicio")
     : { data: [] };
+
+  // Si no hay turnos reales, usar mock data para la demo
+  const appointments = (realAppointments ?? []).length > 0
+    ? realAppointments
+    : getMockTeamAppointments(medicos ?? []);
 
   // Guardias extra de la clínica
   const { data: extraShifts } = await supabase

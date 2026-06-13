@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { BottomNav } from "@/components/ui/BottomNav";
+import { signOutMedico } from "./actions";
 
 export default async function MedicoLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -12,7 +13,7 @@ export default async function MedicoLayout({ children }: { children: React.React
       <main className="flex-1 safe-pb max-w-md mx-auto w-full">
         {children}
       </main>
-      <BottomNav role="medico" />
+      <BottomNav role="medico" signOutAction={signOutMedico} />
     </div>
   );
 }

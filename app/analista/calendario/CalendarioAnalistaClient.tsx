@@ -9,7 +9,7 @@ import { RiskChip } from "@/components/ui/RiskBadge";
 type Medico = { id: string; full_name: string | null; specialty: string | null };
 type Appointment = {
   id: string; medico_id: string; titulo: string; fecha_inicio: string;
-  fecha_fin: string; tipo: string; paciente?: string | null;
+  fecha_fin: string; tipo: string; paciente?: string | null; is_mock?: boolean;
 };
 type ExtraShift = {
   id: string; titulo: string; fecha_inicio: string; fecha_fin: string;
@@ -37,6 +37,7 @@ export function CalendarioAnalistaClient({
   riskMap: RiskMap;
   today: string;
 }) {
+  const todayStr = today;
   const [filterMedico, setFilterMedico] = useState<string>("todos");
   const [tab, setTab] = useState<"agenda" | "guardias">("agenda");
   const [showAddShift, setShowAddShift] = useState(false);
@@ -117,39 +118,86 @@ export function CalendarioAnalistaClient({
                   : `${medicoName(filterMedico)} no tiene turnos`}
               </p>
             </div>
-          ) : (
-            <div className="space-y-3">
-              {filteredAppts.map((apt) => {
-                const cfg = TIPO_COLORS[apt.tipo] ?? TIPO_COLORS.otro;
-                const risk = riskMap[apt.medico_id];
-                return (
-                  <div key={apt.id} className="card flex gap-3 items-start">
-                    <div className="w-1 self-stretch rounded-full flex-shrink-0"
-                         style={{ background: cfg.text }} />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <p className="font-semibold text-sm" style={{ color: "var(--color-text)" }}>
-                          {apt.titulo}
+          ) : (() => {
+            // Agrupar por día
+            const hasMock = filteredAppts.some((a) => a.is_mock);
+            const groups: Record<string, Appointment[]> = {};
+            for (const apt of filteredAppts) {
+              const day = apt.fecha_inicio.split("T")[0];
+              if (!groups[day]) groups[day] = [];
+              groups[day].push(apt);
+            }
+            return (
+              <div className="space-y-5">
+                {hasMock && (
+                  <div className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs"
+                       style={{ background: "var(--color-primary-light)", color: "var(--color-primary)" }}>
+                    <span>📋</span>
+                    <span>Datos de demostración — se reemplazarán al integrar el CRM de la clínica.</span>
+                  </div>
+                )}
+                {Object.entries(groups).map(([day, apts]) => {
+                  const d = new Date(day + "T12:00:00");
+                  const isToday = day === todayStr;
+                  const dayLabel = isToday
+                    ? "Hoy"
+                    : d.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "short" });
+
+                  return (
+                    <div key={day}>
+                      <div className="flex items-center gap-2 mb-2">
+                        <p className="text-xs font-bold uppercase tracking-wider capitalize"
+                           style={{ color: isToday ? "var(--color-primary)" : "var(--color-text-subtle)" }}>
+                          {dayLabel}
                         </p>
-                        <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0"
-                              style={{ background: cfg.bg, color: cfg.text }}>
-                          {cfg.label}
+                        <div className="flex-1 h-px" style={{ background: "var(--color-border)" }} />
+                        <span className="text-xs" style={{ color: "var(--color-text-subtle)" }}>
+                          {apts.length} turnos
                         </span>
                       </div>
-                      <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>
-                        {medicoName(apt.medico_id)} · {fmtDate(apt.fecha_inicio)} {fmt(apt.fecha_inicio)}–{fmt(apt.fecha_fin)}
-                      </p>
-                      {risk && filterMedico === "todos" && (
-                        <div className="mt-1.5">
-                          <RiskChip nivel={risk.nivel as "bajo" | "medio" | "alto"} />
-                        </div>
-                      )}
+                      <div className="space-y-2">
+                        {apts.map((apt) => {
+                          const cfg  = TIPO_COLORS[apt.tipo] ?? TIPO_COLORS.otro;
+                          const risk = riskMap[apt.medico_id];
+                          return (
+                            <div key={apt.id} className="card p-3 flex gap-3 items-start">
+                              {/* Franja de color */}
+                              <div className="w-1 self-stretch rounded-full flex-shrink-0"
+                                   style={{ background: cfg.text }} />
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-start justify-between gap-2">
+                                  <p className="font-semibold text-sm leading-tight" style={{ color: "var(--color-text)" }}>
+                                    {apt.titulo}
+                                  </p>
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full flex-shrink-0 font-medium"
+                                        style={{ background: cfg.bg, color: cfg.text }}>
+                                    {cfg.label}
+                                  </span>
+                                </div>
+                                <p className="text-xs mt-0.5" style={{ color: "var(--color-text-muted)" }}>
+                                  {fmt(apt.fecha_inicio)} – {fmt(apt.fecha_fin)}
+                                  {filterMedico === "todos" && (
+                                    <span style={{ color: "var(--color-text-subtle)" }}>
+                                      {" · "}{medicoName(apt.medico_id).split(" ").slice(-1)[0]}
+                                    </span>
+                                  )}
+                                </p>
+                                {risk && filterMedico === "todos" && (
+                                  <div className="mt-1">
+                                    <RiskChip nivel={risk.nivel as "bajo" | "medio" | "alto"} />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+                  );
+                })}
+              </div>
+            );
+          })()}
         </>
       )}
 

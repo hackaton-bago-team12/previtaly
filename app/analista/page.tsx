@@ -179,7 +179,7 @@ export default async function AnalistaHomePage() {
                       <div className="flex items-center justify-between mt-2">
                         <div>
                           <span className="text-xs" style={{ color: "var(--color-text-subtle)" }}>
-                            Índice:{" "}
+                            Bienestar:{" "}
                           </span>
                           <span className="text-sm font-bold" style={{ color: "var(--color-primary)" }}>
                             {m.latest_analysis.indice_pulso}/100

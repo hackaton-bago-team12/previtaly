@@ -2,10 +2,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { RiskBadge } from "@/components/ui/RiskBadge";
-import { ProgressBar } from "@/components/ui/ProgressBar";
-import { PulseChart } from "@/components/ui/PulseChart";
-import { signOutMedico } from "../actions";
-import { HeartPulseIcon, SignOutIcon } from "@/components/ui/icons";
+import { PulseChart, DonutChart, PerformanceCurveChart } from "@/components/ui/PulseChart";
+import { HeartPulseIcon } from "@/components/ui/icons";
 
 export default async function ResultadosPage() {
   const supabase = await createClient();
@@ -21,7 +19,16 @@ export default async function ResultadosPage() {
     .limit(1)
     .maybeSingle();
 
-  // Historial (últimos 7 registros para el gráfico)
+  // Penúltimo registro para comparación
+  const { data: prevRows } = await supabase
+    .from("ai_analysis")
+    .select("indice_pulso, concentracion, capacidad_restante, estres, carga_acumulada")
+    .eq("medico_id", user.id)
+    .order("created_at", { ascending: false })
+    .range(1, 1);
+  const prev = prevRows?.[0] ?? null;
+
+  // Historial (últimos 7 registros para el gráfico de línea)
   const { data: history } = await supabase
     .from("ai_analysis")
     .select("fecha, indice_pulso")
@@ -29,31 +36,91 @@ export default async function ResultadosPage() {
     .order("fecha", { ascending: true })
     .limit(7);
 
+  // Transcripción del último check-in (para detectar horas mencionadas)
+  const { data: checkin } = await supabase
+    .from("daily_checkins")
+    .select("transcripcion_voz")
+    .eq("id", latest?.checkin_id)
+    .maybeSingle();
+
+  const transcripcion = checkin?.transcripcion_voz ?? "";
+
+  /** Extrae la mayor cantidad de horas mencionada en el texto.
+   *  Detecta patrones como "16 horas", "trabajé 12h", "doce horas", etc. */
+  function extraerHorasDelTexto(texto: string): number | null {
+    if (!texto) return null;
+    const t = texto.toLowerCase();
+
+    // Números en palabras (español)
+    const palabras: Record<string, number> = {
+      "una": 1, "un": 1, "dos": 2, "tres": 3, "cuatro": 4, "cinco": 5,
+      "seis": 6, "siete": 7, "ocho": 8, "nueve": 9, "diez": 10,
+      "once": 11, "doce": 12, "trece": 13, "catorce": 14, "quince": 15,
+      "dieciséis": 16, "dieciseis": 16, "diecisiete": 17, "dieciocho": 18,
+      "diecinueve": 19, "veinte": 20,
+    };
+
+    const resultados: number[] = [];
+
+    // Patrones numéricos: "16 horas", "16h", "16hs"
+    const numericRegex = /(\d{1,2})\s*(?:horas?|hs?\.?)\b/gi;
+    let m;
+    while ((m = numericRegex.exec(t)) !== null) {
+      const n = parseInt(m[1], 10);
+      if (n >= 1 && n <= 24) resultados.push(n);
+    }
+
+    // Patrones en palabras: "doce horas", "catorce horas"
+    for (const [palabra, valor] of Object.entries(palabras)) {
+      const regex = new RegExp(`\\b${palabra}\\s+horas?\\b`, "i");
+      if (regex.test(t)) resultados.push(valor);
+    }
+
+    return resultados.length > 0 ? Math.max(...resultados) : null;
+  }
+
+  // Horas trabajadas hoy desde el calendario (extra_shifts)
+  const today = new Date().toISOString().split("T")[0];
+  const { data: shifts } = await supabase
+    .from("extra_shifts")
+    .select("fecha_inicio, fecha_fin")
+    .eq("medico_asignado_id", user.id)
+    .gte("fecha_inicio", today + "T00:00:00")
+    .lte("fecha_fin", today + "T23:59:59");
+
+  const horasCalendario = Math.round(
+    8 + (shifts ?? []).reduce((sum, s) => {
+      return sum + (new Date(s.fecha_fin).getTime() - new Date(s.fecha_inicio).getTime()) / 3600000;
+    }, 0)
+  );
+
+  const horasTranscripcion = extraerHorasDelTexto(transcripcion);
+
+  // Prevalece el mayor valor entre lo mencionado y el calendario
+  const horasTrabajadas = horasTranscripcion !== null
+    ? Math.max(horasCalendario, horasTranscripcion)
+    : horasCalendario;
+
+  const fuenteHoras = horasTranscripcion !== null && horasTranscripcion > horasCalendario
+    ? `${horasTranscripcion}h (mencionadas)`
+    : `${horasCalendario}h (calendario)`;
+
   const chartData = (history ?? []).map((h) => ({
     label: new Date(h.fecha + "T00:00:00").toLocaleDateString("es-AR", { weekday: "short" }),
     value: h.indice_pulso ?? 50,
   }));
 
-  const avg = chartData.length
-    ? Math.round(chartData.reduce((s, d) => s + d.value, 0) / chartData.length)
-    : null;
-
   const detectados = latest?.detectados as { icono: string; texto: string }[] | null;
+
+  const delta = (key: "indice_pulso" | "concentracion" | "capacidad_restante" | "estres" | "carga_acumulada") =>
+    prev && latest ? latest[key] - prev[key] : undefined;
 
   return (
     <div className="px-5 py-8 space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <HeartPulseIcon className="h-5 w-5" style={{ color: "var(--color-primary)" } as React.CSSProperties} />
-          <span className="text-sm font-semibold" style={{ color: "var(--color-primary)" }}>Tu día, analizado</span>
-        </div>
-        <form action={signOutMedico}>
-          <button type="submit" className="p-2 rounded-xl"
-                  style={{ color: "var(--color-text-subtle)" }} aria-label="Cerrar sesión">
-            <SignOutIcon className="h-5 w-5" />
-          </button>
-        </form>
+      <div className="flex items-center gap-2">
+        <HeartPulseIcon className="h-5 w-5" style={{ color: "var(--color-primary)" } as React.CSSProperties} />
+        <span className="text-sm font-semibold" style={{ color: "var(--color-primary)" }}>Tu día, analizado</span>
       </div>
 
       {!latest ? (
@@ -78,32 +145,88 @@ export default async function ResultadosPage() {
             showTrafficLight
           />
 
-          {/* Pulse index */}
+          {/* Donuts — métricas principales */}
           <div className="card">
-            <div className="flex items-baseline justify-between mb-1">
-              <p className="text-xs font-bold uppercase tracking-widest"
-                 style={{ color: "var(--color-text-subtle)" }}>
-                Índice de Pulso
-              </p>
-              {avg !== null && (
-                <span className="text-xs" style={{ color: "var(--color-text-subtle)" }}>
-                  ▲ {Math.abs(latest.indice_pulso - avg)} vs. tu media
-                </span>
-              )}
-            </div>
-            <p className="text-5xl font-bold mb-1"
-               style={{ color: latest.indice_pulso >= 70 ? "var(--color-risk-low)" :
-                               latest.indice_pulso >= 45 ? "var(--color-risk-mid)" :
-                               "var(--color-risk-high)" }}>
-              {latest.indice_pulso}
-              <span className="text-xl font-normal" style={{ color: "var(--color-text-subtle)" }}>/100</span>
+            <p className="text-xs font-bold uppercase tracking-widest mb-1"
+               style={{ color: "var(--color-text-subtle)" }}>
+              Métricas del día
+              {prev && <span className="ml-2 normal-case font-normal">(vs. ayer)</span>}
+            </p>
+            <p className="text-xs mb-4" style={{ color: "var(--color-text-muted)" }}>
+              Los valores son de 0 a 100. En Estrés y Carga, menos es mejor.
             </p>
 
-            {chartData.length >= 2 && (
-              <div className="mt-4">
-                <PulseChart data={chartData} />
-              </div>
-            )}
+            {/* Fila 1: las 3 métricas "positivas" más importantes */}
+            <div className="grid grid-cols-3 gap-3">
+              <DonutChart
+                value={latest.capacidad_restante}
+                label="Energía"
+                sublabel="restante"
+                color={latest.capacidad_restante >= 60 ? "var(--color-risk-low)" :
+                       latest.capacidad_restante >= 30 ? "var(--color-risk-mid)" : "var(--color-risk-high)"}
+                size={96}
+                delta={delta("capacidad_restante")}
+              />
+              <DonutChart
+                value={latest.concentracion}
+                label="Concentración"
+                sublabel="foco mental"
+                color="var(--color-primary)"
+                size={96}
+                delta={delta("concentracion")}
+              />
+              <DonutChart
+                value={latest.indice_pulso}
+                label="Bienestar"
+                sublabel="estado general"
+                color={latest.indice_pulso >= 70 ? "var(--color-risk-low)" :
+                       latest.indice_pulso >= 45 ? "var(--color-risk-mid)" : "var(--color-risk-high)"}
+                size={96}
+                delta={delta("indice_pulso")}
+              />
+            </div>
+
+            {/* Fila 2: métricas de carga (invertidas — menos es mejor) */}
+            <div className="grid grid-cols-2 gap-4 mt-4 pt-4"
+                 style={{ borderTop: "1px solid var(--color-border)" }}>
+              <DonutChart
+                value={latest.estres}
+                label="Estrés"
+                sublabel="menos es mejor"
+                color={latest.estres >= 70 ? "var(--color-risk-high)" :
+                       latest.estres >= 40 ? "var(--color-risk-mid)" : "var(--color-risk-low)"}
+                size={84}
+                delta={delta("estres") !== undefined ? -(delta("estres")!) : undefined}
+              />
+              <DonutChart
+                value={latest.carga_acumulada}
+                label="Carga acumulada"
+                sublabel="menos es mejor"
+                color={latest.carga_acumulada >= 70 ? "var(--color-risk-high)" :
+                       latest.carga_acumulada >= 40 ? "var(--color-risk-mid)" : "var(--color-risk-low)"}
+                size={84}
+                delta={delta("carga_acumulada") !== undefined ? -(delta("carga_acumulada")!) : undefined}
+              />
+            </div>
+          </div>
+
+          {/* Curva de rendimiento vs horas trabajadas */}
+          <div className="card">
+            <p className="text-xs font-bold uppercase tracking-widest mb-1"
+               style={{ color: "var(--color-text-subtle)" }}>
+              Rendimiento vs. horas trabajadas
+            </p>
+            <p className="text-xs mb-3" style={{ color: "var(--color-text-muted)" }}>
+              Jornada estimada: <strong>{horasTrabajadas}h</strong>
+              <span style={{ color: "var(--color-text-subtle)" }}> · {fuenteHoras}</span>.{" "}
+              El punto muestra tu desempeño en relación a la curva esperada.
+            </p>
+            <PerformanceCurveChart
+              horasTrabajadas={horasTrabajadas}
+              indicePulso={latest.indice_pulso}
+              concentracion={latest.concentracion}
+              capacidadRestante={latest.capacidad_restante}
+            />
           </div>
 
           {/* Qué detecté */}
@@ -124,48 +247,11 @@ export default async function ResultadosPage() {
             </div>
           )}
 
-          {/* Barras de métricas */}
-          <div className="card">
-            <h3 className="font-bold mb-4" style={{ color: "var(--color-text)" }}>
-              Estado general
-            </h3>
-            <div className="space-y-4">
-              <ProgressBar
-                label="Carga"
-                value={latest.carga_acumulada}
-                maxLabel={latest.carga_acumulada >= 70 ? "Alta" : latest.carga_acumulada >= 40 ? "Media" : "Baja"}
-              />
-              <ProgressBar
-                label="Estrés"
-                value={latest.estres}
-                maxLabel={latest.estres >= 70 ? "Alto" : latest.estres >= 40 ? "Medio" : "Bajo"}
-              />
-              <ProgressBar
-                label="Descanso"
-                value={100 - latest.carga_acumulada}
-                maxLabel={latest.carga_acumulada <= 30 ? "Bueno" : latest.carga_acumulada <= 60 ? "Regular" : "Bajo"}
-                color="green"
-              />
-              <ProgressBar
-                label="Ánimo"
-                value={latest.indice_pulso}
-                maxLabel={latest.indice_pulso >= 70 ? "Bueno" : latest.indice_pulso >= 45 ? "Medio" : "Bajo"}
-                color="primary"
-              />
-            </div>
-          </div>
-
-          {/* Métricas detalladas */}
-          <div className="grid grid-cols-2 gap-3">
-            <MetricCard label="Concentración" value={`${latest.concentracion}%`} />
-            <MetricCard label="Cap. restante" value={`${latest.capacidad_restante}%`} />
-          </div>
-
-          {/* Historial si hay más de 1 */}
-          {chartData.length >= 3 && (
+          {/* Gráfico de tendencia */}
+          {chartData.length >= 2 && (
             <div className="card">
               <h3 className="font-bold mb-1" style={{ color: "var(--color-text)" }}>
-                Historial — Índice de Pulso
+                Tendencia — Bienestar general
               </h3>
               <p className="text-xs mb-4" style={{ color: "var(--color-text-subtle)" }}>
                 Últimos {chartData.length} registros
@@ -174,12 +260,15 @@ export default async function ResultadosPage() {
             </div>
           )}
 
-          {/* CTA sugerencias */}
+          {/* CTAs */}
           <Link href="/medico/sugerencias" className="btn-primary block text-center">
             Ver plan de hoy →
           </Link>
-
-          {/* Nueva análisis */}
+          <Link href="/medico/historial"
+                className="block text-center text-sm underline underline-offset-2"
+                style={{ color: "var(--color-text-subtle)" }}>
+            Ver historial completo
+          </Link>
           <Link href="/medico"
                 className="block text-center text-sm underline underline-offset-2 pb-2"
                 style={{ color: "var(--color-text-subtle)" }}>
@@ -187,15 +276,6 @@ export default async function ResultadosPage() {
           </Link>
         </>
       )}
-    </div>
-  );
-}
-
-function MetricCard({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="card">
-      <p className="text-xs font-medium mb-1" style={{ color: "var(--color-text-subtle)" }}>{label}</p>
-      <p className="text-2xl font-bold" style={{ color: "var(--color-primary)" }}>{value}</p>
     </div>
   );
 }

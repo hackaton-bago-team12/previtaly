@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { BottomNav } from "@/components/ui/BottomNav";
+import { signOutAnalista } from "./actions";
 
 export default async function AnalistaLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -12,7 +13,7 @@ export default async function AnalistaLayout({ children }: { children: React.Rea
       <main className="flex-1 safe-pb max-w-2xl mx-auto w-full">
         {children}
       </main>
-      <BottomNav role="analista" />
+      <BottomNav role="analista" signOutAction={signOutAnalista} />
     </div>
   );
 }

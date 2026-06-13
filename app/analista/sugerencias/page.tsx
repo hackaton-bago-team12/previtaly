@@ -125,7 +125,7 @@ export default async function SugerenciasAnalistaPage() {
         <div className="grid grid-cols-2 gap-3">
           <div className="card text-center">
             <p className="text-3xl font-bold" style={{ color: "var(--color-primary)" }}>{avgPulse}</p>
-            <p className="text-xs mt-1" style={{ color: "var(--color-text-muted)" }}>Índice de Pulso promedio</p>
+            <p className="text-xs mt-1" style={{ color: "var(--color-text-muted)" }}>Bienestar general promedio</p>
           </div>
           <div className="card text-center">
             <p className="text-3xl font-bold"
