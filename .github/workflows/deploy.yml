@@ -1,0 +1,39 @@
+name: Deploy frontend to Azure
+
+# Se dispara con cada push a main (o manualmente desde la pestaña Actions).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  ACR: previtalydgqyt3acr.azurecr.io
+  IMAGE: previtaly-web
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login al Azure Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.ACR }}
+          username: previtalydgqyt3acr
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build y push de la imagen
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ env.ACR }}/${{ env.IMAGE }}:latest
+          # Variables NEXT_PUBLIC (publicas) que Next inyecta en build.
+          build-args: |
+            NEXT_PUBLIC_SUPABASE_URL=https://uyxbgbbmvtpxkdsepdoj.supabase.co
+            NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_buDo8i_C_7q_ip9FV5-scA_x5jlD52d
+
+      # Tras el push, el webhook del ACR avisa al App Service y este
+      # baja la imagen nueva y se reinicia solo.

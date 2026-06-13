@@ -141,3 +141,122 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
   z-index: 50;
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   LANDING PAGE · concepto "El Pulso" (tema oscuro, aislado con .lp)
+   ════════════════════════════════════════════════════════════════════ */
+.lp {
+  --lp-bg:       #f4f8f6;   /* base muy clara (clínica) */
+  --lp-bg-2:     #ffffff;   /* blanco */
+  --lp-surface:  #ffffff;
+  --lp-surface-2:#eaf2ed;   /* verde muy claro */
+  --lp-border:   #dce8e2;
+  --lp-line:     #2d5246;   /* línea de pulso (verde bosque) */
+  --lp-glow:     #6fae93;
+  --lp-accent:   #2d5246;   /* sin coral: mismo verde de la app */
+  --lp-accent-2: #3d6b5a;
+  --lp-text:     #1a2e26;
+  --lp-muted:    #5a7268;
+  --lp-subtle:   #8fa89f;
+
+  background: var(--lp-bg);
+  color: var(--lp-text);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  min-height: 100svh;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lp ::selection { background: var(--lp-line); color: #fff; }
+
+/* Fondos con profundidad (sutiles, sobre claro) */
+.lp-bg-radial {
+  background:
+    radial-gradient(1100px 600px at 75% -10%, rgba(45, 82, 70, 0.07), transparent 60%),
+    radial-gradient(900px 500px at 10% 10%,  rgba(111, 174, 147, 0.10), transparent 55%);
+}
+
+/* ── Línea de electrocardiograma (sweep luminoso) ────────────────── */
+.lp-ekg-base { stroke: var(--lp-border); }
+.lp-ekg-glow {
+  stroke: var(--lp-line);
+  filter: drop-shadow(0 0 4px rgba(111, 174, 147, 0.55));
+  stroke-dasharray: 140 1000;
+  animation: lp-sweep 4.2s linear infinite;
+}
+@keyframes lp-sweep {
+  from { stroke-dashoffset: 1140; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* Punto que late */
+.lp-dot { animation: lp-blip 4.2s ease-in-out infinite; transform-origin: center; }
+@keyframes lp-blip {
+  0%, 100% { opacity: 0.35; r: 4; }
+  48%      { opacity: 0.35; r: 4; }
+  52%      { opacity: 1;    r: 7; }
+  60%      { opacity: 0.6;  r: 4; }
+}
+
+/* Respiración suave de halos */
+.lp-breathe { animation: lp-breathe 6s ease-in-out infinite; }
+@keyframes lp-breathe {
+  0%, 100% { transform: scale(1);    opacity: 0.7; }
+  50%      { transform: scale(1.06); opacity: 1; }
+}
+
+/* Mini-EKG vertical que conecta secciones */
+.lp-thread {
+  stroke: var(--lp-border);
+  stroke-dasharray: 60 600;
+  animation: lp-thread 5s linear infinite;
+}
+@keyframes lp-thread {
+  from { stroke-dashoffset: 660; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* ── Reveal al hacer scroll ──────────────────────────────────────── */
+.lp-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-reveal.is-visible { opacity: 1; transform: none; }
+
+/* ── Botones ─────────────────────────────────────────────────────── */
+.lp-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.95rem 1.6rem; border-radius: 0.85rem;
+  font-weight: 600; font-size: 0.95rem; cursor: pointer; border: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.lp-btn-primary {
+  background: var(--color-primary); color: #fff;
+  box-shadow: 0 8px 26px rgba(45, 82, 70, 0.22);
+}
+.lp-btn-primary:hover { transform: translateY(-2px); background: var(--color-primary-mid); box-shadow: 0 12px 34px rgba(45, 82, 70, 0.30); }
+.lp-btn-ghost {
+  background: #fff; color: var(--color-primary);
+  border: 1px solid var(--lp-border);
+}
+.lp-btn-ghost:hover { background: var(--lp-surface-2); border-color: var(--lp-line); }
+
+/* ── Tarjetas ────────────────────────────────────────────────────── */
+.lp-card {
+  background: var(--lp-surface);
+  border: 1px solid var(--lp-border);
+  border-radius: 1.1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(26, 46, 38, 0.04);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.lp-card:hover { transform: translateY(-3px); border-color: var(--lp-glow); box-shadow: 0 14px 32px rgba(26, 46, 38, 0.09); }
+
+/* ── Accesibilidad: respetar reduce-motion ───────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .lp-ekg-glow, .lp-dot, .lp-breathe, .lp-thread { animation: none; }
+  .lp-ekg-glow { stroke-dasharray: none; }
+  .lp-reveal { opacity: 1; transform: none; transition: none; }
+}
