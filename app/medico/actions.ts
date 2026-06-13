@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { generateMockAnalysis } from "@/lib/mock-analysis";
+import { analyzeCheckin } from "@/lib/ai-service";
 
 export type CheckinState = { error?: string };
 
@@ -37,8 +37,9 @@ export async function submitCheckin(
     return { error: "No se pudo guardar el check-in." };
   }
 
-  // Generar análisis mock (reemplazable por IA real)
-  const analysis = generateMockAnalysis({ transcripcion, comidas, energia, actividad });
+  // Análisis con IA real (Azure OpenAI vía nuestro microservicio).
+  // Si el servicio no está disponible, cae automáticamente al mock.
+  const analysis = await analyzeCheckin({ transcripcion, comidas, energia, actividad });
 
   await supabase.from("ai_analysis").insert({
     checkin_id:         checkin.id,
