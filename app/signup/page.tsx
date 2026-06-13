@@ -17,7 +17,7 @@ export default function SignupRolePage() {
               Previtaly
             </h1>
             <p className="mt-1 text-sm" style={{ color: "var(--color-text-muted)" }}>
-              ¿Cómo vas a usar la plataforma?
+              ¿Cómo usarás la plataforma?
             </p>
           </div>
         </div>
@@ -71,7 +71,7 @@ export default function SignupRolePage() {
           ¿Ya tienes cuenta?{" "}
           <Link href="/login" className="font-medium underline underline-offset-2"
                 style={{ color: "var(--color-primary)" }}>
-            Iniciá sesión
+            Inicia sesión
           </Link>
         </p>
       </div>

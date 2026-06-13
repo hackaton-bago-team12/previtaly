@@ -32,7 +32,7 @@ function LoginForm() {
               Previtaly
             </h1>
             <p className="mt-1 text-sm" style={{ color: "var(--color-text-muted)" }}>
-              Iniciá sesión en tu cuenta
+              Inicia sesión en tu cuenta
             </p>
           </div>
         </div>
@@ -77,7 +77,7 @@ function LoginForm() {
           ¿No tienes cuenta?{" "}
           <Link href="/signup" className="font-medium underline underline-offset-2"
                 style={{ color: "var(--color-primary)" }}>
-            Registrate
+            Regístrate
           </Link>
         </p>
       </div>

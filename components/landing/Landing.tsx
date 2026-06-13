@@ -73,7 +73,7 @@ export function Landing() {
               Iniciar sesión
             </Link>
             <Link href="/signup" className="lp-btn lp-btn-primary !py-2 !px-3.5 !text-[0.82rem]">
-              Registrate
+              Regístrate
             </Link>
           </div>
         </nav>

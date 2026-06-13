@@ -138,7 +138,7 @@ export function VoiceRecorder({ onTranscript, disabled }: Props) {
           Mantené presionado y contame cómo estuvo tu día.
         </p>
         <p className="text-xs" style={{ color: "var(--color-text-subtle)" }}>
-          Soltá cuando termines — sin límite de tiempo.
+          Suelta cuando termines — sin límite de tiempo.
         </p>
       </div>
     );
@@ -156,7 +156,7 @@ export function VoiceRecorder({ onTranscript, disabled }: Props) {
           onPointerUp={handlePointerUp}
           className="relative flex items-center justify-center select-none touch-none"
           style={{ userSelect: "none" }}
-          aria-label="Soltá para detener"
+          aria-label="Suelta para detener"
         >
           {/* Onda exterior pulsante */}
           <span className="absolute w-32 h-32 rounded-full animate-ping opacity-20"
@@ -180,7 +180,7 @@ export function VoiceRecorder({ onTranscript, disabled }: Props) {
         </div>
 
         <p className="text-xs" style={{ color: "var(--color-text-subtle)" }}>
-          Soltá el botón para terminar
+          Suelta el botón para terminar
         </p>
       </div>
     );

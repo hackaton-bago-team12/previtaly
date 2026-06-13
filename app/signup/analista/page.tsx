@@ -69,7 +69,7 @@ export default function SignupAnalistaPage() {
             </div>
             <div className="text-center">
               <h1 className="text-xl font-bold" style={{ color: "var(--color-text)" }}>
-                Elegí tu plan
+                Elige tu plan
               </h1>
               <p className="mt-1 text-sm" style={{ color: "var(--color-text-muted)" }}>
                 Puedes cambiarlo cuando quieras
@@ -415,7 +415,7 @@ export default function SignupAnalistaPage() {
             {clinicCode}
           </div>
           <p className="mb-6 text-xs" style={{ color: "var(--color-text-subtle)" }}>
-            Guardá este código. Lo vas a necesitar para incorporar médicos.
+            Guarda este código. Lo necesitarás para incorporar médicos.
           </p>
           <Link href="/login" className="btn-primary">
             Ir a iniciar sesión
