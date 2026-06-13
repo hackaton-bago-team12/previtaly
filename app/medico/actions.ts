@@ -54,6 +54,8 @@ export async function submitCheckin(
     detectados:         analysis.detectados,
     sugerencias:        analysis.sugerencias,
     tendencia:          analysis.tendencia,
+    causa_principal:    analysis.causaPrincipal,
+    factores:           analysis.factores,
   });
 
   revalidatePath("/medico/resultados");

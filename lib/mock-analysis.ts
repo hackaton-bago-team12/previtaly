@@ -5,6 +5,17 @@ export type MockAnalysisInput = {
   actividad: number;
 };
 
+// Dimensiones de causa del desgaste (por qué sube el riesgo).
+export type CausaKey =
+  | "sobrecarga"
+  | "descanso"
+  | "alimentacion"
+  | "emocional"
+  | "aislamiento"
+  | "autoexigencia";
+
+export type Factor = { dimension: CausaKey; peso: number };
+
 export type MockAnalysisResult = {
   indicePulso:       number;
   concentracion:     number;
@@ -13,6 +24,8 @@ export type MockAnalysisResult = {
   cargaAcumulada:    number;
   nivelRiesgo:       "bajo" | "medio" | "alto";
   tendencia:         "subiendo" | "estable" | "bajando";
+  causaPrincipal:    CausaKey;
+  factores:          Factor[];
   detectados:        { icono: string; texto: string }[];
   sugerencias:       { tipo: "primaria" | "secundaria"; titulo: string; descripcion: string; icono: string }[];
 };
@@ -118,6 +131,32 @@ export function generateMockAnalysis(input: MockAnalysisInput): MockAnalysisResu
     });
   }
 
+  // Causa: pesamos cada dimensión y elegimos la dominante.
+  const lower = transcripcion.toLowerCase();
+  const has = (...ws: string[]) => ws.some((w) => lower.includes(w));
+  const rawCausas: Record<CausaKey, number> = {
+    emocional:     Math.max(0, voiceStress) + (has("desmotiv", "no tengo ganas", "superad", "no puedo más", "no puedo mas") ? 25 : 0),
+    descanso:      energiaScore + (has("no dormí", "no dormi", "sueño", "cansado", "agotado") ? 20 : 0),
+    alimentacion:  comidasScore * 1.6,
+    sobrecarga:    stressSignals * 12 + (has("guardia", "muchas", "consultas", "turno", "ritmo", "doble") ? 30 : 0),
+    autoexigencia: has("tengo que", "rendir", "exig", "más y más", "mas y mas", "perfecto", "no puedo parar") ? 45 : 0,
+    aislamiento:   has("solo", "sola", "nadie", "sin apoyo", "no delego") ? 40 : 0,
+  };
+
+  const ordenadas = (Object.entries(rawCausas) as [CausaKey, number][])
+    .map(([dimension, v]) => ({ dimension, v: Math.max(0, v) }))
+    .filter((f) => f.v > 0)
+    .sort((a, b) => b.v - a.v)
+    .slice(0, 4);
+  if (ordenadas.length === 0) ordenadas.push({ dimension: "sobrecarga", v: 1 });
+
+  const total = ordenadas.reduce((s, f) => s + f.v, 0);
+  const factores: Factor[] = ordenadas.map((f) => ({
+    dimension: f.dimension,
+    peso: Math.round((f.v / total) * 100),
+  }));
+  const causaPrincipal = factores[0].dimension;
+
   return {
     indicePulso,
     concentracion,
@@ -126,6 +165,8 @@ export function generateMockAnalysis(input: MockAnalysisInput): MockAnalysisResu
     cargaAcumulada,
     nivelRiesgo,
     tendencia,
+    causaPrincipal,
+    factores,
     detectados,
     sugerencias,
   };

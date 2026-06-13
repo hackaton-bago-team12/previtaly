@@ -5,6 +5,8 @@ import { RiskBadge } from "@/components/ui/RiskBadge";
 import { PulseChart, DonutChart, PerformanceCurveChart } from "@/components/ui/PulseChart";
 import { HeartPulseIcon, ClipboardIcon } from "@/components/ui/icons";
 import { AnalysisIcon } from "@/components/ui/analysis-icon";
+import { CAUSAS } from "@/lib/causas";
+import type { CausaKey, Factor } from "@/lib/mock-analysis";
 
 export default async function ResultadosPage() {
   const supabase = await createClient();
@@ -145,6 +147,52 @@ export default async function ResultadosPage() {
             tendencia={latest.tendencia as "subiendo" | "estable" | "bajando"}
             showTrafficLight
           />
+
+          {/* Causa principal — el "por qué" detrás del riesgo */}
+          {latest.causa_principal && CAUSAS[latest.causa_principal as CausaKey] && (() => {
+            const causa = CAUSAS[latest.causa_principal as CausaKey];
+            const factores = (latest.factores as Factor[] | null) ?? [];
+            const Icon = causa.Icon;
+            return (
+              <div className="card">
+                <p className="text-xs font-bold uppercase tracking-widest mb-3"
+                   style={{ color: "var(--color-text-subtle)" }}>
+                  Causa principal
+                </p>
+                <div className="flex items-start gap-3">
+                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl"
+                       style={{ background: "var(--color-primary-lt)" }}>
+                    <Icon className="h-6 w-6" style={{ color: "var(--color-primary)" }} />
+                  </div>
+                  <div>
+                    <p className="font-semibold" style={{ color: "var(--color-text)" }}>{causa.label}</p>
+                    <p className="text-sm mt-0.5" style={{ color: "var(--color-text-muted)" }}>{causa.descripcion}</p>
+                  </div>
+                </div>
+
+                {factores.length > 0 && (
+                  <div className="mt-4 space-y-2.5">
+                    {factores.map((f) => {
+                      const info = CAUSAS[f.dimension];
+                      if (!info) return null;
+                      return (
+                        <div key={f.dimension}>
+                          <div className="flex justify-between text-xs mb-1">
+                            <span style={{ color: "var(--color-text-muted)" }}>{info.label}</span>
+                            <span className="font-semibold" style={{ color: "var(--color-text)" }}>{f.peso}%</span>
+                          </div>
+                          <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--color-border)" }}>
+                            <div className="h-full rounded-full"
+                                 style={{ width: `${f.peso}%`, background: "var(--color-primary)" }} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Donuts — métricas principales */}
           <div className="card">

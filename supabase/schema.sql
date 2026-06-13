@@ -151,8 +151,16 @@ create table if not exists public.ai_analysis (
   detectados          jsonb not null default '[]',
   sugerencias         jsonb not null default '[]',
   tendencia           text check (tendencia in ('subiendo', 'estable', 'bajando')) default 'estable',
+  causa_principal     text check (causa_principal in ('sobrecarga','descanso','alimentacion','emocional','aislamiento','autoexigencia')),
+  factores            jsonb not null default '[]',
   created_at          timestamptz not null default now()
 );
+
+-- Migración para bases ya creadas (ejecutar una vez en Supabase → SQL Editor):
+--   alter table public.ai_analysis
+--     add column if not exists causa_principal text
+--       check (causa_principal in ('sobrecarga','descanso','alimentacion','emocional','aislamiento','autoexigencia')),
+--     add column if not exists factores jsonb not null default '[]';
 
 alter table public.ai_analysis enable row level security;
 
