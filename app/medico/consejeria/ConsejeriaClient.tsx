@@ -36,7 +36,7 @@ export function ConsejeriaClient() {
       <div style={{ padding: "78px 22px 24px", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
         <div style={{ textAlign: "center", marginBottom: 8 }}>
           <div style={{ fontSize: 11, letterSpacing: ".16em", textTransform: "uppercase", color: "var(--color-text-subtle)", fontWeight: 600 }}>Consejería del día</div>
-          <h1 style={{ margin: "10px 0 4px", fontSize: 24, fontWeight: 700, letterSpacing: "-.02em" }}>Contame tu jornada</h1>
+          <h1 style={{ margin: "10px 0 4px", fontSize: 24, fontWeight: 700, letterSpacing: "-.02em" }}>Cuéntame tu jornada</h1>
           <p style={{ margin: 0, fontSize: 14, color: "var(--color-text-muted)", lineHeight: 1.4 }}>
             Según lo que me cuentes, te armo recomendaciones para hoy.
           </p>

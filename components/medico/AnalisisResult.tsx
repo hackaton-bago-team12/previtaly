@@ -44,7 +44,7 @@ export function AnalisisResult({
   const tendencia = TEND_LABEL[analysis.tendencia] ?? "Estable";
 
   const narrativa = (analysis.detectados ?? []).map((d) => d.texto).join(" ").trim()
-    || "Registré tu día. Seguí cuidando tus pausas y tu descanso.";
+    || "Registré tu día. Sigue cuidando tus pausas y tu descanso.";
 
   const dots: { key: "bajo" | "medio" | "alto"; label: string }[] = [
     { key: "bajo", label: "Bajo" },

@@ -40,7 +40,7 @@ export async function submitCheckin(
   }
 
   // Análisis con IA real (Azure OpenAI vía nuestro microservicio).
-  // Si el servicio no está disponible, cae automáticamente al mock.
+  // Si el servicio no está disponible, cae automaticamente al mock.
   const analysis = await analyzeCheckin({ transcripcion, comidas, energia, actividad });
 
   await supabase.from("ai_analysis").insert({

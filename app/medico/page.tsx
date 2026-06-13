@@ -46,7 +46,7 @@ export default async function MedicoHomePage() {
 
   const hoy = new Date();
   const fechaLabel = hoy
-    .toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" })
+    .toLocaleDateString("es-PE", { weekday: "long", day: "numeric", month: "long" })
     .replace(/^\w/, (c) => c.toUpperCase());
 
   return (
@@ -62,7 +62,7 @@ export default async function MedicoHomePage() {
       {/* Saludo */}
       <p style={{ margin: 0, fontSize: 13, letterSpacing: ".02em", color: "var(--color-text-subtle)", fontWeight: 500 }}>{fechaLabel}</p>
       <h1 style={{ margin: "6px 0 2px", fontSize: 27, fontWeight: 700, letterSpacing: "-.02em", color: "var(--color-text)" }}>Hola, Dr. {firstName}</h1>
-      <p style={{ margin: "0 0 26px", fontSize: 16, color: "var(--color-text-muted)" }}>¿Qué querés hacer hoy?</p>
+      <p style={{ margin: "0 0 26px", fontSize: 16, color: "var(--color-text-muted)" }}>¿Qué quieres hacer hoy?</p>
 
       {/* Tarjeta · Análisis del Día */}
       <Link href="/medico/analisis" className="flex items-center gap-4" style={cardStyle}>
@@ -71,7 +71,7 @@ export default async function MedicoHomePage() {
         </span>
         <span className="flex-1 min-w-0">
           <span style={{ display: "block", fontSize: 17, fontWeight: 700, letterSpacing: "-.01em", color: "var(--color-text)" }}>Análisis del Día</span>
-          <span style={{ display: "block", fontSize: 13.5, color: "var(--color-text-muted)", marginTop: 3, lineHeight: 1.35 }}>Contame cómo estuvo tu día y lo analizo</span>
+          <span style={{ display: "block", fontSize: 13.5, color: "var(--color-text-muted)", marginTop: 3, lineHeight: 1.35 }}>Cuéntame cómo estuvo tu día y lo analizo</span>
         </span>
         <Chevron />
       </Link>
@@ -96,7 +96,7 @@ export default async function MedicoHomePage() {
           </span>
           <div>
             <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--color-text)" }}>
-              Llevás {racha} {racha === 1 ? "día" : "días"} seguidos
+              Llevas {racha} {racha === 1 ? "día" : "días"} seguidos
             </div>
             <div style={{ fontSize: 12.5, color: "var(--color-text-muted)", marginTop: 1 }}>Tu constancia mejora la precisión del análisis</div>
           </div>

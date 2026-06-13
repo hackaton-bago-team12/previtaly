@@ -23,9 +23,9 @@ export default async function ResultadosPage() {
       <div style={{ padding: "74px 22px 30px", animation: "screenIn .35s ease" }}>
         <BackButton href="/medico" />
         <div className="card text-center" style={{ paddingTop: 48, paddingBottom: 48 }}>
-          <p className="font-semibold" style={{ color: "var(--color-text)", marginBottom: 4 }}>Todavía no tenés análisis</p>
+          <p className="font-semibold" style={{ color: "var(--color-text)", marginBottom: 4 }}>Todavía no tienes análisis</p>
           <p className="text-sm" style={{ color: "var(--color-text-muted)", marginBottom: 20 }}>
-            Hacé tu Análisis del Día para ver tu Índice de Pulso.
+            Haz tu Análisis del Día para ver tu Índice de Pulso.
           </p>
           <Link href="/medico/analisis" className="btn-primary inline-block w-auto" style={{ paddingLeft: 24, paddingRight: 24 }}>
             Empezar análisis →

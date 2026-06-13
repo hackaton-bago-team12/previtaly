@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 /**
- * Callback del login OAuth (Google). Supabase redirige acá con ?code=...
+ * Callback del login OAuth (Google). Supabase redirige aquí con ?code=...
  * Intercambiamos el código por una sesión y mandamos al usuario a su panel.
  *
  * En Supabase → Authentication → URL Configuration agregá a "Redirect URLs":

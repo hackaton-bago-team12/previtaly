@@ -32,7 +32,7 @@ export function CheckinClient() {
             <div style={eyebrow}>Análisis del día</div>
             <h1 style={{ margin: "10px 0 4px", fontSize: 24, fontWeight: 700, letterSpacing: "-.02em" }}>¿Cómo estuvo tu día?</h1>
             <p style={{ margin: 0, fontSize: 14, color: "var(--color-text-muted)", lineHeight: 1.4 }}>
-              Contame en ~20 segundos. Yo lo convierto en tu Índice de Pulso.
+              Cuéntame en ~20 segundos. Yo lo convierto en tu Índice de Pulso.
             </p>
           </div>
 

@@ -9,14 +9,14 @@ export type Sugerencia = {
 
 const FALLBACK_PRIMARY: Sugerencia = {
   tipo: "primaria",
-  titulo: "Cortá 10 minutos antes de tu próxima guardia",
+  titulo: "Corta 10 minutos antes de tu próxima guardia",
   descripcion: "Una pausa real, sin pantallas, baja el estrés acumulado y sostiene tu concentración el resto del día.",
   icono: "leaf",
 };
 const FALLBACK_SEC: Sugerencia[] = [
-  { tipo: "secundaria", titulo: "Hidratación", descripcion: "Tomá un vaso de agua ahora y otro en 2 horas.", icono: "water" },
+  { tipo: "secundaria", titulo: "Hidratación", descripcion: "Toma un vaso de agua ahora y otro en 2 horas.", icono: "water" },
   { tipo: "secundaria", titulo: "Respiración 4-7-8", descripcion: "Tres ciclos antes de dormir para conciliar mejor.", icono: "breath" },
-  { tipo: "secundaria", titulo: "Cena temprana", descripcion: "Comé al menos 2 horas antes de acostarte.", icono: "food" },
+  { tipo: "secundaria", titulo: "Cena temprana", descripcion: "Come al menos 2 horas antes de acostarte.", icono: "food" },
 ];
 
 /** Tarjetas de consejos: acción primaria (verde) + secundarias (blancas). */
@@ -29,7 +29,7 @@ export function ConsejosCards({ sugerencias }: { sugerencias: Sugerencia[] }) {
     <>
       {/* Acción primaria */}
       <div style={{ background: "var(--color-primary)", borderRadius: 20, padding: 22, color: "#fff", marginBottom: 14, boxShadow: "0 14px 34px -16px rgba(45,82,70,.7)" }}>
-        <div style={{ fontSize: 10.5, letterSpacing: ".14em", textTransform: "uppercase", color: "#a7c4b8", fontWeight: 600, marginBottom: 12 }}>Empezá por acá</div>
+        <div style={{ fontSize: 10.5, letterSpacing: ".14em", textTransform: "uppercase", color: "#a7c4b8", fontWeight: 600, marginBottom: 12 }}>Empieza por aquí</div>
         <div className="flex items-start" style={{ gap: 14 }}>
           <span className="flex items-center justify-center" style={{ flex: "0 0 auto", width: 46, height: 46, borderRadius: 13, background: "rgba(255,255,255,.14)", color: "#fff" }}>
             <AnalysisIcon name={primaria.icono} className="h-6 w-6" />
@@ -67,7 +67,7 @@ export function SeguimientoBanner() {
       <div>
         <div style={{ fontSize: 14.5, fontWeight: 700, color: "#92400e" }}>Seguimiento sugerido</div>
         <div style={{ fontSize: 13, color: "#92400e", marginTop: 3, lineHeight: 1.45 }}>
-          Tu carga viene alta. Volvé a hacer un check-in mañana, no es una señal de debilidad; es parte del protocolo de cuidado.
+          Tu carga viene alta. Vuelve a hacer un check-in mañana, no es una señal de debilidad; es parte del protocolo de cuidado.
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 /**
  * Aviso que se muestra mientras no estén configuradas las variables de
- * entorno de Supabase. Se oculta automáticamente una vez que cargás
+ * entorno de Supabase. Se oculta automaticamente una vez que cargás
  * `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` en `.env.local`.
  */
 export function SetupNotice() {

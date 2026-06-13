@@ -30,7 +30,7 @@ export default async function ConsejosPage() {
         <div className="card text-center" style={{ paddingTop: 36, paddingBottom: 36 }}>
           <p className="font-semibold" style={{ color: "var(--color-text)", marginBottom: 4 }}>Todavía no hay consejos</p>
           <p className="text-sm" style={{ color: "var(--color-text-muted)", marginBottom: 18 }}>
-            Hacé tu Análisis o Consejería del día para recibir tu plan personalizado.
+            Haz tu Análisis o Consejería del día para recibir tu plan personalizado.
           </p>
           <Link href="/medico" className="btn-primary inline-block w-auto" style={{ paddingLeft: 24, paddingRight: 24 }}>Ir al inicio →</Link>
         </div>

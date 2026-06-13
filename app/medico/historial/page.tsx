@@ -125,7 +125,7 @@ export default async function HistorialPage({
       {filtradas.length === 0 ? (
         <div className="card text-center" style={{ paddingTop: 36, paddingBottom: 36 }}>
           <p className="font-semibold" style={{ color: "var(--color-text)", marginBottom: 4 }}>Sin registros todavía</p>
-          <p className="text-sm" style={{ color: "var(--color-text-muted)", marginBottom: 18 }}>Hacé tu primer análisis o consejería del día.</p>
+          <p className="text-sm" style={{ color: "var(--color-text-muted)", marginBottom: 18 }}>Haz tu primer análisis o consejería del día.</p>
           <Link href="/medico" className="btn-primary inline-block w-auto" style={{ paddingLeft: 24, paddingRight: 24 }}>Ir al inicio →</Link>
         </div>
       ) : (

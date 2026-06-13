@@ -17,7 +17,7 @@ function GoogleLogo() {
 
 /**
  * Botón "Continuar con Google" (Supabase OAuth).
- * El primer login con Google crea la cuenta automáticamente (rol: medico).
+ * El primer login con Google crea la cuenta automaticamente (rol: medico).
  */
 export function GoogleButton({ label = "Continuar con Google" }: { label?: string }) {
   const [loading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ export function GoogleButton({ label = "Continuar con Google" }: { label?: strin
       setError("No se pudo conectar con Google. Intentá de nuevo.");
       setLoading(false);
     }
-    // Si todo va bien, el navegador se redirige a Google automáticamente.
+    // Si todo va bien, el navegador se redirige a Google automaticamente.
   }
 
   return (

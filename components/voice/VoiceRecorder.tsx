@@ -16,8 +16,8 @@ declare global {
 }
 
 /**
- * Grabador por voz (Web Speech API, es-AR). Mantené presionado para hablar,
- * soltá para terminar. Visual alineado al diseño (círculo 128px con glow y
+ * Grabador por voz (Web Speech API, es-PE). Mantén presionado para hablar,
+ * suelta para terminar. Visual alineado al diseño (círculo 128px con glow y
  * ondas mientras graba). Al soltar, devuelve la transcripción por onTranscript.
  */
 export function VoiceRecorder({ onTranscript, disabled }: Props) {
@@ -52,7 +52,7 @@ export function VoiceRecorder({ onTranscript, disabled }: Props) {
     setRecording(true);
 
     const recognition = new SR();
-    recognition.lang = "es-AR";
+    recognition.lang = "es-PE";
     recognition.continuous = true;
     recognition.interimResults = true;
 
@@ -93,7 +93,7 @@ export function VoiceRecorder({ onTranscript, disabled }: Props) {
         disabled={disabled}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
-        aria-label="Mantené presionado para hablar"
+        aria-label="Mantén presionado para hablar"
         className="relative flex items-center justify-center select-none touch-none"
         style={{
           width: 128,
@@ -133,7 +133,7 @@ export function VoiceRecorder({ onTranscript, disabled }: Props) {
         )}
       </button>
       <div style={{ fontSize: 13.5, color: "var(--color-text-muted)", fontWeight: 500 }}>
-        {recording ? "Soltá para terminar" : "Mantené presionado para hablar"}
+        {recording ? "Suelta para terminar" : "Mantén presionado para hablar"}
       </div>
     </div>
   );

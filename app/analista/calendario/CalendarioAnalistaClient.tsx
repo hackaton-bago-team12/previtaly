@@ -22,7 +22,7 @@ const MONTHS = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov
 
 function fmt(iso: string) {
   const d = new Date(iso);
-  return d.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
+  return d.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit" });
 }
 function fmtDate(iso: string) {
   const d = new Date(iso);
@@ -143,7 +143,7 @@ export function CalendarioAnalistaClient({
                   const isToday = day === todayStr;
                   const dayLabel = isToday
                     ? "Hoy"
-                    : d.toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "short" });
+                    : d.toLocaleDateString("es-PE", { weekday: "long", day: "numeric", month: "short" });
 
                   return (
                     <div key={day}>

@@ -90,7 +90,7 @@ export function generateMockAnalysis(input: MockAnalysisInput): MockAnalysisResu
   if (nivelRiesgo === "alto") {
     sugerencias.push({
       tipo: "primaria",
-      titulo: "Tomá un descanso ahora",
+      titulo: "Toma un descanso ahora",
       descripcion: "Cinco minutos de respiración profunda antes de tu próxima consulta reducen el cortisol un 23%.",
       icono: "breath",
     });
@@ -110,14 +110,14 @@ export function generateMockAnalysis(input: MockAnalysisInput): MockAnalysisResu
     sugerencias.push({
       tipo: "secundaria",
       titulo: "Redistribuí una consulta del jueves",
-      descripcion: "Llevás 3 días seguidos en alza de carga.",
+      descripcion: "Llevas 3 días seguidos en alza de carga.",
       icono: "refresh",
     });
   } else {
     sugerencias.push({
       tipo: "primaria",
       titulo: "¡Buen trabajo hoy!",
-      descripcion: "Tu estado es óptimo. Mantené la rutina de actividad física que está funcionando.",
+      descripcion: "Tu estado es óptimo. Mantén la rutina de actividad física que está funcionando.",
       icono: "activity",
     });
   }

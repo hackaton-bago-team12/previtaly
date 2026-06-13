@@ -270,7 +270,7 @@ export default async function AnalistaHomePage() {
 
                     {m.latest_analysis && (
                       <p className="text-xs mt-1" style={{ color: "var(--color-text-subtle)" }}>
-                        Último check-in: {new Date(m.latest_analysis.fecha + "T12:00:00").toLocaleDateString("es-AR")}
+                        Último check-in: {new Date(m.latest_analysis.fecha + "T12:00:00").toLocaleDateString("es-PE")}
                       </p>
                     )}
                   </div>

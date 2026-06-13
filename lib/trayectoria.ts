@@ -83,7 +83,7 @@ export function calcularTrayectoria(serie: PuntoRiesgo[]): Trayectoria {
       riesgoActual: actual,
       pendientePorDia: m,
       diasHastaAlto: null,
-      mensaje: "Venís mejorando. Mantené lo que estás haciendo.",
+      mensaje: "Venís mejorando. Mantén lo que estás haciendo.",
     };
   }
 
@@ -92,6 +92,6 @@ export function calcularTrayectoria(serie: PuntoRiesgo[]): Trayectoria {
     riesgoActual: actual,
     pendientePorDia: m,
     diasHastaAlto: null,
-    mensaje: "Tu trayectoria viene estable. Seguí cuidando tu descanso y tu carga.",
+    mensaje: "Tu trayectoria viene estable. Sigue cuidando tu descanso y tu carga.",
   };
 }
