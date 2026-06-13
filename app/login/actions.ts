@@ -15,7 +15,7 @@ export async function login(
     return { error: "Falta configurar Supabase en .env.local" };
   }
 
-  const email = String(formData.get("email") ?? "").trim();
+  const email    = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
 
   if (!email || !password) {
@@ -29,52 +29,29 @@ export async function login(
     return { error: traducirError(error.message) };
   }
 
+  // Leer el rol del perfil para redirigir correctamente
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    revalidatePath("/", "layout");
+    const role = profile?.role ?? "medico";
+    redirect(role === "analista" ? "/analista" : "/medico");
+  }
+
   revalidatePath("/", "layout");
-  redirect("/dashboard");
+  redirect("/medico");
 }
 
-export async function signup(
-  _prev: AuthState,
-  formData: FormData,
-): Promise<AuthState> {
-  if (!hasEnvVars) {
-    return { error: "Falta configurar Supabase en .env.local" };
-  }
-
-  const email = String(formData.get("email") ?? "").trim();
-  const password = String(formData.get("password") ?? "");
-  const fullName = String(formData.get("fullName") ?? "").trim();
-
-  if (!email || !password) {
-    return { error: "Completá email y contraseña." };
-  }
-  if (password.length < 6) {
-    return { error: "La contraseña debe tener al menos 6 caracteres." };
-  }
-
-  const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: { data: { full_name: fullName } },
-  });
-
-  if (error) {
-    return { error: traducirError(error.message) };
-  }
-
-  return {
-    message:
-      "Cuenta creada. Revisá tu email para confirmar la cuenta y luego iniciá sesión.",
-  };
-}
-
-/** Traduce los mensajes de error más comunes de Supabase al español. */
 function traducirError(message: string): string {
   const map: Record<string, string> = {
     "Invalid login credentials": "Email o contraseña incorrectos.",
-    "Email not confirmed": "Todavía no confirmaste tu email.",
-    "User already registered": "Ya existe una cuenta con ese email.",
+    "Email not confirmed":       "Todavía no confirmaste tu email.",
+    "User already registered":   "Ya existe una cuenta con ese email.",
   };
   return map[message] ?? message;
 }

@@ -1,26 +1,143 @@
 @import "tailwindcss";
 
+/* ── Design tokens ──────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Paleta Previtaly — forest green + sage */
+  --color-bg:           #f0f4f2;
+  --color-bg-card:      #ffffff;
+  --color-primary:      #2d5246;
+  --color-primary-mid:  #3d6b5a;
+  --color-primary-light:#e8f0ec;
+  --color-primary-soft: #c8ddd5;
+
+  /* Texto */
+  --color-text:         #1a2e26;
+  --color-text-muted:   #5a7268;
+  --color-text-subtle:  #8fa89f;
+
+  /* Riesgo */
+  --color-risk-low:     #2d7a4e;
+  --color-risk-mid:     #b45309;
+  --color-risk-high:    #b91c1c;
+  --color-risk-low-bg:  #dcfce7;
+  --color-risk-mid-bg:  #fef3c7;
+  --color-risk-high-bg: #fee2e2;
+
+  /* Bordes y sombras */
+  --color-border:       #dce8e2;
+  --radius-card:        1rem;
+  --radius-btn:         0.75rem;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background:   var(--color-bg);
+  --color-foreground:   var(--color-text);
+  --font-sans:          var(--font-geist-sans);
+  --font-mono:          var(--font-geist-mono);
+
+  /* Tailwind custom colors */
+  --color-prv-bg:          var(--color-bg);
+  --color-prv-card:        var(--color-bg-card);
+  --color-prv-primary:     var(--color-primary);
+  --color-prv-primary-mid: var(--color-primary-mid);
+  --color-prv-primary-lt:  var(--color-primary-light);
+  --color-prv-primary-soft:var(--color-primary-soft);
+  --color-prv-text:        var(--color-text);
+  --color-prv-muted:       var(--color-text-muted);
+  --color-prv-subtle:      var(--color-text-subtle);
+  --color-prv-border:      var(--color-border);
+  --color-prv-low:         var(--color-risk-low);
+  --color-prv-mid:         var(--color-risk-mid);
+  --color-prv-high:        var(--color-risk-high);
+  --color-prv-low-bg:      var(--color-risk-low-bg);
+  --color-prv-mid-bg:      var(--color-risk-mid-bg);
+  --color-prv-high-bg:     var(--color-risk-high-bg);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ── Reset & base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { height: 100%; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  min-height: 100%;
+  background: var(--color-bg);
+  color: var(--color-text);
   font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Utility classes ────────────────────────────────────────────────── */
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: var(--radius-btn);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+.btn-primary:hover  { background: var(--color-primary-mid); }
+.btn-primary:active { opacity: 0.88; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: var(--color-primary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border-radius: var(--radius-btn);
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s;
+}
+.btn-ghost:hover { opacity: 0.7; }
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--color-bg-card);
+  border: 1.5px solid var(--color-border);
+  border-radius: 0.75rem;
+  color: var(--color-text);
+  font-size: 0.9375rem;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.input::placeholder { color: var(--color-text-subtle); }
+.input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+/* ── Safe area for mobile bottom nav ───────────────────────────────── */
+.safe-pb { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px)); }
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--color-bg-card);
+  border-top: 1px solid var(--color-border);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  z-index: 50;
 }
