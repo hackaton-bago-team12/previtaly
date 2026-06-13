@@ -377,7 +377,7 @@ export default function SignupAnalistaPage() {
           <div className="flex items-center justify-center gap-1.5 mt-3">
             <ShieldCheckIcon className="h-4 w-4" style={{ color: "var(--color-text-subtle)" } as React.CSSProperties} />
             <span className="text-xs" style={{ color: "var(--color-text-subtle)" }}>
-              Pago simulado — sin cobro real
+              Pago simulado · sin cobro real
             </span>
           </div>
 

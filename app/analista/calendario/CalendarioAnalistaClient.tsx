@@ -50,7 +50,7 @@ export function CalendarioAnalistaClient({
   );
 
   const medicoName = (id: string) =>
-    medicos.find((m) => m.id === id)?.full_name ?? "—";
+    medicos.find((m) => m.id === id)?.full_name ?? "-";
 
   async function handleAssign(shiftId: string, medicoId: string) {
     setAssignError(null);
@@ -100,7 +100,7 @@ export function CalendarioAnalistaClient({
             {medicos.map((m) => (
               <FilterBtn key={m.id} active={filterMedico === m.id}
                          onClick={() => setFilterMedico(m.id)}>
-                {m.full_name?.split(" ").slice(-1)[0] ?? "—"}
+                {m.full_name?.split(" ").slice(-1)[0] ?? "-"}
                 {riskMap[m.id] && (
                   <StatusDot
                     level={riskMap[m.id].nivel as "bajo" | "medio" | "alto"}
@@ -135,7 +135,7 @@ export function CalendarioAnalistaClient({
                   <div className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs"
                        style={{ background: "var(--color-primary-light)", color: "var(--color-primary)" }}>
                     <ClipboardIcon className="h-4 w-4 flex-shrink-0" style={{ color: "var(--color-primary)" } as React.CSSProperties} />
-                    <span>Datos de demostración — se reemplazarán al integrar el CRM de la clínica.</span>
+                    <span>Datos de demostración, se reemplazarán al integrar el CRM de la clínica.</span>
                   </div>
                 )}
                 {Object.entries(groups).map(([day, apts]) => {
@@ -177,7 +177,7 @@ export function CalendarioAnalistaClient({
                                   </span>
                                 </div>
                                 <p className="text-xs mt-0.5" style={{ color: "var(--color-text-muted)" }}>
-                                  {fmt(apt.fecha_inicio)} – {fmt(apt.fecha_fin)}
+                                  {fmt(apt.fecha_inicio)} - {fmt(apt.fecha_fin)}
                                   {filterMedico === "todos" && (
                                     <span style={{ color: "var(--color-text-subtle)" }}>
                                       {" · "}{medicoName(apt.medico_id).split(" ").slice(-1)[0]}
@@ -265,7 +265,7 @@ export function CalendarioAnalistaClient({
                       <div>
                         <p className="font-semibold" style={{ color: "var(--color-text)" }}>{shift.titulo}</p>
                         <p className="text-xs mt-0.5" style={{ color: "var(--color-text-muted)" }}>
-                          {fmtDate(shift.fecha_inicio)} · {fmt(shift.fecha_inicio)}–{fmt(shift.fecha_fin)}
+                          {fmtDate(shift.fecha_inicio)} · {fmt(shift.fecha_inicio)}-{fmt(shift.fecha_fin)}
                         </p>
                       </div>
                       {assigned ? (
@@ -331,7 +331,7 @@ export function CalendarioAnalistaClient({
                                 {blocked
                                   ? <AlertIcon className="h-4 w-4" style={{ color: "var(--color-risk-high)" } as React.CSSProperties} />
                                   : <CheckIcon className="h-4 w-4" style={{ color: "var(--color-text)" } as React.CSSProperties} />}
-                                {m.full_name?.split(" ").slice(-1)[0] ?? "—"}
+                                {m.full_name?.split(" ").slice(-1)[0] ?? "-"}
                               </button>
                             );
                           })}

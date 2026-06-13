@@ -1,5 +1,5 @@
 /**
- * Predicción por TRAYECTORIA — honesta, sin "ML mágico".
+ * Predicción por TRAYECTORIA - honesta, sin "ML mágico".
  * Sobre la serie de check-ins calculamos un riesgo compuesto, su pendiente
  * (regresión lineal) y proyectamos cuántos días faltan para entrar en zona alta.
  */

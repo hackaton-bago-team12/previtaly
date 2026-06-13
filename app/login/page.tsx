@@ -8,7 +8,6 @@ import { login, type AuthState } from "./actions";
 import { hasEnvVars } from "@/lib/utils";
 import { SetupNotice } from "@/components/setup-notice";
 import { HeartPulseIcon, CheckIcon } from "@/components/ui/icons";
-import { GoogleButton } from "@/components/auth/GoogleButton";
 
 const initialState: AuthState = {};
 
@@ -46,14 +45,6 @@ function LoginForm() {
             <span>Cuenta creada. Revisá tu email para confirmarla, luego iniciá sesión.</span>
           </div>
         )}
-
-        <GoogleButton />
-
-        <div className="my-5 flex items-center gap-3">
-          <span className="h-px flex-1" style={{ background: "var(--color-border)" }} />
-          <span className="text-xs" style={{ color: "var(--color-text-subtle)" }}>o con tu email</span>
-          <span className="h-px flex-1" style={{ background: "var(--color-border)" }} />
-        </div>
 
         <form action={formAction} className="card space-y-4" style={{ borderColor: "var(--color-border)" }}>
           <Field label="Email" name="email" type="email"

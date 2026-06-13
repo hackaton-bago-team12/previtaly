@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
-import { MicIcon, CheckIcon } from "@/components/ui/icons";
 
 type Props = {
   onTranscript: (text: string) => void;
@@ -16,38 +15,27 @@ declare global {
   }
 }
 
+/**
+ * Grabador por voz (Web Speech API, es-AR). Mantené presionado para hablar,
+ * soltá para terminar. Visual alineado al diseño (círculo 128px con glow y
+ * ondas mientras graba). Al soltar, devuelve la transcripción por onTranscript.
+ */
 export function VoiceRecorder({ onTranscript, disabled }: Props) {
-  const [state, setState] = useState<"idle" | "recording" | "done">("idle");
-  const [elapsed, setElapsed] = useState(0);
+  const [recording, setRecording] = useState(false);
   const [interim, setInterim] = useState("");
-  const [finalText, setFinalText] = useState("");
 
-  const recognitionRef  = useRef<any>(null);
-  const timerRef        = useRef<ReturnType<typeof setInterval> | null>(null);
-  const finalRef        = useRef("");
-  const isHoldingRef    = useRef(false);
-
-  // Limpia el timer
-  const clearTimer = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  };
+  const recognitionRef = useRef<any>(null);
+  const finalRef = useRef("");
+  const isHoldingRef = useRef(false);
 
   const stopRecording = useCallback((cancelled = false) => {
     isHoldingRef.current = false;
-    clearTimer();
     recognitionRef.current?.stop();
     recognitionRef.current = null;
-
+    setRecording(false);
     if (!cancelled) {
       const full = (finalRef.current + " " + interim).trim();
-      setFinalText(full);
       onTranscript(full);
-      setState("done");
-    } else {
-      setState("idle");
     }
     setInterim("");
   }, [interim, onTranscript]);
@@ -58,17 +46,14 @@ export function VoiceRecorder({ onTranscript, disabled }: Props) {
       alert("Tu navegador no soporta reconocimiento de voz. Podés escribir tu respuesta directamente.");
       return;
     }
-
     finalRef.current = "";
     setInterim("");
-    setFinalText("");
-    setElapsed(0);
     isHoldingRef.current = true;
-    setState("recording");
+    setRecording(true);
 
     const recognition = new SR();
-    recognition.lang          = "es-AR";
-    recognition.continuous    = true;
+    recognition.lang = "es-AR";
+    recognition.continuous = true;
     recognition.interimResults = true;
 
     recognition.onresult = (event: any) => {
@@ -82,12 +67,7 @@ export function VoiceRecorder({ onTranscript, disabled }: Props) {
       finalRef.current += fin;
       setInterim(inter);
     };
-
-    recognition.onerror = () => {
-      if (isHoldingRef.current) stopRecording();
-    };
-
-    // Algunos navegadores paran el recognition solos; si sigue presionado, lo reinicia
+    recognition.onerror = () => { if (isHoldingRef.current) stopRecording(); };
     recognition.onend = () => {
       if (isHoldingRef.current && recognitionRef.current) {
         try { recognitionRef.current.start(); } catch { /* ignore */ }
@@ -96,127 +76,65 @@ export function VoiceRecorder({ onTranscript, disabled }: Props) {
 
     recognition.start();
     recognitionRef.current = recognition;
-
-    timerRef.current = setInterval(() => setElapsed((s) => s + 1), 1000);
   }, [stopRecording]);
 
-  // Cleanup al desmontar
-  useEffect(() => () => { clearTimer(); recognitionRef.current?.stop(); }, []);
+  useEffect(() => () => { recognitionRef.current?.stop(); }, []);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     e.currentTarget.setPointerCapture(e.pointerId);
-    if (!disabled && state !== "recording") startRecording();
+    if (!disabled && !recording) startRecording();
   };
+  const handlePointerUp = () => { if (recording) stopRecording(); };
 
-  const handlePointerUp = () => {
-    if (state === "recording") stopRecording();
-  };
-
-  const fmtElapsed = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
-
-  // ── IDLE ───────────────────────────────────────────────────────────
-  if (state === "idle") {
-    return (
-      <div className="flex flex-col items-center gap-3">
-        <button
-          type="button"
-          disabled={disabled}
-          onPointerDown={handlePointerDown}
-          onPointerUp={handlePointerUp}
-          className="flex flex-col items-center gap-3 select-none touch-none group"
-          aria-label="Mantené presionado para grabar"
-          style={{ userSelect: "none" }}
-        >
-          <div
-            className="w-28 h-28 rounded-full flex items-center justify-center shadow-lg transition-transform group-active:scale-90"
-            style={{ background: "var(--color-primary)" }}
-          >
-            <MicIcon className="h-12 w-12 text-white" />
-          </div>
-        </button>
-        <p className="text-sm text-center" style={{ color: "var(--color-text-muted)" }}>
-          Mantené presionado y contame cómo estuvo tu día.
-        </p>
-        <p className="text-xs" style={{ color: "var(--color-text-subtle)" }}>
-          Soltá cuando termines — sin límite de tiempo.
-        </p>
-      </div>
-    );
-  }
-
-  // ── RECORDING ─────────────────────────────────────────────────────
-  if (state === "recording") {
-    const liveText = (finalRef.current + interim).trim();
-    return (
-      <div className="flex flex-col items-center gap-4 w-full">
-        {/* Botón presionado — efecto pulsante */}
-        <button
-          type="button"
-          onPointerDown={handlePointerDown}
-          onPointerUp={handlePointerUp}
-          className="relative flex items-center justify-center select-none touch-none"
-          style={{ userSelect: "none" }}
-          aria-label="Soltá para detener"
-        >
-          {/* Onda exterior pulsante */}
-          <span className="absolute w-32 h-32 rounded-full animate-ping opacity-20"
-                style={{ background: "var(--color-primary)" }} />
-          <span className="absolute w-28 h-28 rounded-full animate-pulse opacity-30"
-                style={{ background: "var(--color-primary)" }} />
-
-          <div className="relative w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-xl"
-               style={{ background: "var(--color-primary)" }}>
-            <div className="w-3 h-3 rounded-full bg-red-400 mb-1" />
-            <span className="text-white text-base font-bold">{fmtElapsed(elapsed)}</span>
-          </div>
-        </button>
-
-        {/* Transcripción en vivo */}
-        <div className="w-full min-h-[56px] rounded-xl px-4 py-3 text-sm italic text-center"
-             style={{ background: "var(--color-primary-light)", color: "var(--color-primary)" }}>
-          {liveText
-            ? `"${liveText}"`
-            : <span style={{ color: "var(--color-text-subtle)" }}>Escuchando…</span>}
-        </div>
-
-        <p className="text-xs" style={{ color: "var(--color-text-subtle)" }}>
-          Soltá el botón para terminar
-        </p>
-      </div>
-    );
-  }
-
-  // ── DONE ──────────────────────────────────────────────────────────
   return (
-    <div className="flex flex-col items-center gap-3 w-full">
-      <div className="w-16 h-16 rounded-full flex items-center justify-center"
-           style={{ background: "var(--color-primary-light)" }}>
-        <CheckIcon className="h-7 w-7" style={{ color: "var(--color-primary)" }} />
-      </div>
-      <p className="text-sm font-medium" style={{ color: "var(--color-primary)" }}>
-        Grabación completada · {fmtElapsed(elapsed)}
-      </p>
-      {finalText && (
-        <div className="w-full rounded-xl px-4 py-3 text-sm italic"
-             style={{ background: "var(--color-primary-light)", color: "var(--color-primary)" }}>
-          &ldquo;{finalText}&rdquo;
-        </div>
-      )}
+    <div className="flex flex-col items-center" style={{ gap: 18 }}>
       <button
         type="button"
-        onClick={() => {
-          setState("idle");
-          finalRef.current = "";
-          setInterim("");
-          setFinalText("");
-          setElapsed(0);
-          onTranscript("");
+        disabled={disabled}
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        aria-label="Mantené presionado para hablar"
+        className="relative flex items-center justify-center select-none touch-none"
+        style={{
+          width: 128,
+          height: 128,
+          borderRadius: "50%",
+          border: "none",
+          cursor: disabled ? "not-allowed" : "pointer",
+          background: "var(--color-primary)",
+          boxShadow: "0 16px 40px -12px rgba(45,82,70,.6)",
+          animation: recording ? undefined : "glow 2.4s ease infinite",
+          userSelect: "none",
         }}
-        className="text-xs underline underline-offset-2"
-        style={{ color: "var(--color-text-subtle)" }}
       >
-        Grabar de nuevo
+        {recording ? (
+          <span className="flex items-center" style={{ gap: 4, height: 46 }}>
+            {[0, 0.12, 0.24, 0.36, 0.48].map((d, i) => (
+              <span
+                key={i}
+                style={{
+                  width: 5,
+                  height: "100%",
+                  background: "#fff",
+                  borderRadius: 3,
+                  transformOrigin: "center",
+                  animation: `wave .8s ease ${d}s infinite`,
+                }}
+              />
+            ))}
+          </span>
+        ) : (
+          <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="9" y="3" width="6" height="11" rx="3" />
+            <path d="M5 11a7 7 0 0 0 14 0" />
+            <path d="M12 18v3" />
+            <path d="M8.5 21h7" />
+          </svg>
+        )}
       </button>
+      <div style={{ fontSize: 13.5, color: "var(--color-text-muted)", fontWeight: 500 }}>
+        {recording ? "Soltá para terminar" : "Mantené presionado para hablar"}
+      </div>
     </div>
   );
 }

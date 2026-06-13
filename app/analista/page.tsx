@@ -37,7 +37,7 @@ export default async function AnalistaHomePage() {
   const clinicId   = analistaProfile?.clinic_id;
   const clinicInfo = analistaProfile?.clinics as unknown as { name: string; code: string } | null;
   const clinicName = clinicInfo?.name ?? "Mi Clínica";
-  const clinicCode = clinicInfo?.code ?? "—";
+  const clinicCode = clinicInfo?.code ?? "-";
 
   // Médicos de la misma clínica
   const { data: medicos } = await supabase
@@ -154,12 +154,12 @@ export default async function AnalistaHomePage() {
              style={{ borderColor: "var(--color-risk-mid)", background: "var(--color-risk-mid-bg)" }}>
           <AlertIcon className="h-5 w-5 flex-shrink-0" style={{ color: "var(--color-risk-mid)" }} />
           <p className="text-sm" style={{ color: "var(--color-risk-mid)" }}>
-            <strong>{enAlza}</strong> médico{enAlza === 1 ? "" : "s"} con bienestar en descenso esta semana — conviene anticiparse.
+            <strong>{enAlza}</strong> médico{enAlza === 1 ? "" : "s"} con bienestar en descenso esta semana, conviene anticiparse.
           </p>
         </div>
       )}
 
-      {/* Por qué sube el equipo — ranking de causas */}
+      {/* Por qué sube el equipo - ranking de causas */}
       {causasRanking.length > 0 && (
         <div className="card mb-5">
           <p className="text-xs font-bold uppercase tracking-widest mb-1"
@@ -229,7 +229,7 @@ export default async function AnalistaHomePage() {
                     <div className="flex items-start justify-between gap-2">
                       <div>
                         <p className="font-semibold text-sm" style={{ color: "var(--color-text)" }}>
-                          {m.full_name ?? "—"}
+                          {m.full_name ?? "-"}
                         </p>
                         <p className="text-xs" style={{ color: "var(--color-text-muted)" }}>
                           {m.specialty ?? "Sin especialidad"}

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Previtaly",
-  description: "Plataforma para profesionales de la salud — Bago",
+  description: "Plataforma para profesionales de la salud · Bago",
 };
 
 export default function RootLayout({

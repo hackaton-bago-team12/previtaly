@@ -5,7 +5,7 @@ export function getMockAppointments(medicoId: string, fecha: string) {
     {
       id: "mock-1",
       medico_id: medicoId,
-      titulo: "Consulta — Ana Rodríguez",
+      titulo: "Consulta · Ana Rodríguez",
       descripcion: "Control de rutina anual",
       paciente: "Ana Rodríguez",
       tipo: "consulta",
@@ -16,7 +16,7 @@ export function getMockAppointments(medicoId: string, fecha: string) {
     {
       id: "mock-2",
       medico_id: medicoId,
-      titulo: "Consulta — Carlos Fernández",
+      titulo: "Consulta · Carlos Fernández",
       descripcion: "Revisión post-operatoria",
       paciente: "Carlos Fernández",
       tipo: "consulta",
@@ -27,7 +27,7 @@ export function getMockAppointments(medicoId: string, fecha: string) {
     {
       id: "mock-3",
       medico_id: medicoId,
-      titulo: "Cirugía — María González",
+      titulo: "Cirugía · María González",
       descripcion: "Extirpación laparoscópica",
       paciente: "María González",
       tipo: "cirugia",
@@ -98,7 +98,7 @@ export function getMockTeamAppointments(
         appointments.push({
           id: `mock-team-${dayOffset}-${medico.id}-c${c}`,
           medico_id: medico.id,
-          titulo: `Consulta — ${paciente}`,
+          titulo: `Consulta · ${paciente}`,
           descripcion: c % 3 === 0 ? "Control anual" : c % 3 === 1 ? "Seguimiento" : "Primera vez",
           paciente,
           tipo: "consulta",
@@ -117,7 +117,7 @@ export function getMockTeamAppointments(
         appointments.push({
           id: `mock-team-${dayOffset}-${medico.id}-cir`,
           medico_id: medico.id,
-          titulo: `Cirugía — ${cirugia}`,
+          titulo: `Cirugía · ${cirugia}`,
           descripcion: cirugia,
           paciente: PACIENTES[(idx + 7) % PACIENTES.length],
           tipo: "cirugia",

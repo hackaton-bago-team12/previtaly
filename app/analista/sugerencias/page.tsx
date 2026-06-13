@@ -66,7 +66,7 @@ export default async function SugerenciasAnalistaPage() {
   if (highRiskMedicos.length > 0) {
     conclusiones.push({
       tipo: "critica",
-      texto: `${highRiskMedicos.length} médico${highRiskMedicos.length > 1 ? "s" : ""} en riesgo alto: ${highRiskMedicos.map((a) => medicoMap[a.medico_id]?.full_name?.split(" ").pop() ?? "—").join(", ")}.`,
+      texto: `${highRiskMedicos.length} médico${highRiskMedicos.length > 1 ? "s" : ""} en riesgo alto: ${highRiskMedicos.map((a) => medicoMap[a.medico_id]?.full_name?.split(" ").pop() ?? "-").join(", ")}.`,
     });
   }
   if (avgStress !== null && avgStress > 60) {

@@ -147,6 +147,7 @@ create table if not exists public.ai_analysis (
   checkin_id          uuid references public.daily_checkins(id) on delete cascade,
   medico_id           uuid not null references auth.users(id) on delete cascade,
   fecha               date not null,
+  tipo                text not null default 'analisis' check (tipo in ('analisis','consejeria')),
   indice_pulso        smallint check (indice_pulso between 0 and 100),
   concentracion       smallint check (concentracion between 0 and 100),
   estres              smallint check (estres between 0 and 100),
@@ -166,6 +167,12 @@ create table if not exists public.ai_analysis (
 --     add column if not exists causa_principal text
 --       check (causa_principal in ('sobrecarga','descanso','alimentacion','emocional','aislamiento','autoexigencia')),
 --     add column if not exists factores jsonb not null default '[]';
+--
+-- Migración para distinguir Análisis vs Consejería (necesaria para la pantalla
+-- de Inicio rediseñada y el Historial con tipos). Ejecutar una vez:
+--   alter table public.ai_analysis
+--     add column if not exists tipo text not null default 'analisis'
+--       check (tipo in ('analisis','consejeria'));
 
 alter table public.ai_analysis enable row level security;
 
