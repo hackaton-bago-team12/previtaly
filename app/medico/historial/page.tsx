@@ -16,6 +16,7 @@ type AnalysisRow = {
   nivel_riesgo: "bajo" | "medio" | "alto";
   tendencia: "subiendo" | "estable" | "bajando";
   detectados: { icono: string; texto: string }[] | null;
+  daily_checkins: { modo: string | null } | null;
 };
 
 function formatFecha(fecha: string) {
@@ -85,12 +86,12 @@ export default async function HistorialPage() {
 
   const { data: rows } = await supabase
     .from("ai_analysis")
-    .select("id, fecha, indice_pulso, concentracion, estres, capacidad_restante, carga_acumulada, nivel_riesgo, tendencia, detectados")
+    .select("id, fecha, indice_pulso, concentracion, estres, capacidad_restante, carga_acumulada, nivel_riesgo, tendencia, detectados, daily_checkins(modo)")
     .eq("medico_id", user.id)
     .order("fecha", { ascending: false })
     .limit(30);
 
-  const history = (rows ?? []) as AnalysisRow[];
+  const history = (rows ?? []) as unknown as AnalysisRow[];
 
   const chartData = [...history].reverse().map((h, i) => ({
     label: new Date(h.fecha + "T00:00:00").toLocaleDateString("es-AR", { day: "numeric", month: "numeric" }),
@@ -220,8 +221,14 @@ export default async function HistorialPage() {
                     <div className="flex items-center justify-between px-4 py-2.5"
                          style={{ background: rBg }}>
                       <div>
-                        <p className="font-semibold text-sm capitalize" style={{ color: "var(--color-text)" }}>
+                        <p className="font-semibold text-sm capitalize flex items-center gap-2" style={{ color: "var(--color-text)" }}>
                           {formatFecha(h.fecha)}
+                          {h.daily_checkins?.modo === "express" && (
+                            <span className="text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded"
+                                  style={{ background: "var(--color-bg-card)", color: "var(--color-text-subtle)", border: "1px solid var(--color-border)" }}>
+                              Express
+                            </span>
+                          )}
                         </p>
                         {delta !== null && (
                           <p className="text-xs"

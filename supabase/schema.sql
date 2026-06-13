@@ -112,8 +112,13 @@ create table if not exists public.daily_checkins (
   comidas           smallint check (comidas between 1 and 3),
   energia           smallint check (energia between 1 and 10),
   actividad_fisica  smallint check (actividad_fisica between 1 and 10),
+  modo              text check (modo in ('completo', 'express')) default 'completo',
   created_at        timestamptz not null default now()
 );
+-- Migración para bases ya creadas:
+--   alter table public.daily_checkins
+--     add column if not exists modo text
+--       check (modo in ('completo','express')) default 'completo';
 
 alter table public.daily_checkins enable row level security;
 

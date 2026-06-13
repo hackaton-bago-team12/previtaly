@@ -7,7 +7,31 @@ import { HeartPulseIcon } from "@/components/ui/icons";
 
 const initial: CheckinState = {};
 
-type Step = "voice" | "quick" | "details";
+type Step = "voice" | "quick" | "details" | "express";
+
+// Escala de ánimo para el modo express (1 toque → energía).
+const MOODS = [
+  { energia: 2,  label: "Muy bajo", color: "var(--color-risk-high)" },
+  { energia: 4,  label: "Bajo",     color: "var(--color-risk-mid)" },
+  { energia: 6,  label: "Normal",   color: "var(--color-text-muted)" },
+  { energia: 8,  label: "Bien",     color: "var(--color-primary)" },
+  { energia: 10, label: "Muy bien", color: "var(--color-risk-low)" },
+];
+
+/** Carita dibujada (SVG, no emoji): la boca varía según el ánimo. */
+function MoodFace({ energia, color }: { energia: number; color: string }) {
+  const s = (energia - 6) / 4;   // -1 (triste) .. 1 (feliz)
+  const cy = 15 + s * 4;         // control de la boca
+  return (
+    <svg viewBox="0 0 24 24" className="h-9 w-9 flex-shrink-0" fill="none"
+         stroke={color} strokeWidth={1.8} strokeLinecap="round">
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="9" cy="10.5" r="0.7" fill={color} stroke="none" />
+      <circle cx="15" cy="10.5" r="0.7" fill={color} stroke="none" />
+      <path d={`M8.5 15 Q12 ${cy} 15.5 15`} />
+    </svg>
+  );
+}
 
 export function CheckinClient({ nombre }: { nombre: string }) {
   const [state, formAction, pending] = useActionState(submitCheckin, initial);
@@ -61,6 +85,13 @@ export function CheckinClient({ nombre }: { nombre: string }) {
           <div className="mt-auto pt-6 flex flex-col items-center gap-4">
             <button
               type="button"
+              onClick={() => setStep("express")}
+              className="btn-ghost"
+            >
+              Responder en 10 segundos
+            </button>
+            <button
+              type="button"
               onClick={() => setStep("quick")}
               className="btn-ghost"
             >
@@ -99,6 +130,7 @@ export function CheckinClient({ nombre }: { nombre: string }) {
 
           <form ref={formRef} action={formAction} className="flex flex-col gap-6 flex-1">
             <input type="hidden" name="transcripcion" value={transcript} />
+            <input type="hidden" name="modo" value="completo" />
 
             {/* Comidas */}
             <div>
@@ -194,6 +226,60 @@ export function CheckinClient({ nombre }: { nombre: string }) {
                 + Generado por IA según tu estado y carga
               </p>
             </div>
+          </form>
+        </div>
+      )}
+
+      {/* Modo express — 1 toque */}
+      {step === "express" && (
+        <div className="flex flex-col flex-1">
+          <button
+            type="button"
+            onClick={() => setStep("voice")}
+            className="flex items-center gap-1 text-sm mb-6"
+            style={{ color: "var(--color-text-muted)" }}
+          >
+            ← Volver
+          </button>
+          <h2 className="text-2xl font-bold mb-1" style={{ color: "var(--color-text)" }}>
+            ¿Cómo venís hoy?
+          </h2>
+          <p className="text-sm mb-8" style={{ color: "var(--color-text-muted)" }}>
+            Un toque y listo. Sin formularios.
+          </p>
+
+          <form action={formAction} className="flex flex-col gap-3 flex-1">
+            <input type="hidden" name="transcripcion" value="" />
+            <input type="hidden" name="comidas" value="" />
+            <input type="hidden" name="actividad" value="5" />
+            <input type="hidden" name="modo" value="express" />
+
+            {MOODS.map((m) => (
+              <button
+                key={m.energia}
+                type="submit"
+                name="energia"
+                value={m.energia}
+                disabled={pending}
+                className="flex items-center gap-4 rounded-xl border-2 p-3 transition-all active:scale-95 disabled:opacity-50"
+                style={{ borderColor: "var(--color-border)", background: "var(--color-bg-card)" }}
+              >
+                <MoodFace energia={m.energia} color={m.color} />
+                <span className="font-semibold" style={{ color: "var(--color-text)" }}>{m.label}</span>
+              </button>
+            ))}
+
+            {state.error && (
+              <p className="rounded-xl px-4 py-3 text-sm"
+                 style={{ background: "var(--color-risk-high-bg)", color: "var(--color-risk-high)" }}>
+                {state.error}
+              </p>
+            )}
+            {pending && (
+              <p className="text-center text-sm mt-2" style={{ color: "var(--color-text-muted)" }}>
+                Analizando tu día…
+              </p>
+            )}
           </form>
         </div>
       )}

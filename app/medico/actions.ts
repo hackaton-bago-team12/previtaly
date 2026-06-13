@@ -19,6 +19,7 @@ export async function submitCheckin(
   const comidas       = Number(formData.get("comidas") ?? 0);
   const energia       = Number(formData.get("energia") ?? 5);
   const actividad     = Number(formData.get("actividad") ?? 5);
+  const modo          = formData.get("modo") === "express" ? "express" : "completo";
 
   // Insertar check-in
   const { data: checkin, error: checkinErr } = await supabase
@@ -29,6 +30,7 @@ export async function submitCheckin(
       comidas:          comidas || null,
       energia,
       actividad_fisica: actividad,
+      modo,
     })
     .select()
     .single();
