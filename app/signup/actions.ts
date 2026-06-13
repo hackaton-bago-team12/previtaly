@@ -77,15 +77,15 @@ export async function signupMedico(
 
   const supabase = await createClient();
 
-  // Verificar código de clínica
-  const { data: clinic } = await supabase
-    .from("clinics")
-    .select("id")
-    .eq("code", clinicCode)
-    .maybeSingle();
+  // Verificar código de clínica via RPC (security definer bypasea RLS,
+  // ya que el médico aún no tiene perfil vinculado a ninguna clínica).
+  const { data: clinicId } = await supabase
+    .rpc("get_clinic_by_code", { p_code: clinicCode });
 
-  if (!clinic)
+  if (!clinicId)
     return { error: "Código de clínica inválido. Pedíselo a tu analista." };
+
+  const clinic = { id: clinicId as string };
 
   const { error: authErr } = await supabase.auth.signUp({
     email,
