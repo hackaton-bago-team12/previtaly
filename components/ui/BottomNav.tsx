@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTransition } from "react";
-import { HomeIcon, CalendarIcon, ChartIcon, LightbulbIcon, UsersIcon, ClockIcon, SignOutIcon } from "./icons";
+import { HomeIcon, CalendarIcon, ChartIcon, UsersIcon, ClockIcon, LightbulbIcon, SignOutIcon } from "./icons";
 
 type NavItem = {
   href: string;
@@ -31,11 +31,6 @@ const medicoItems: NavItem[] = [
     href: "/medico/historial",
     label: "Historial",
     icon: (a) => <ClockIcon className={`h-5 w-5 ${a ? "stroke-[2.2]" : ""}`} />,
-  },
-  {
-    href: "/medico/sugerencias",
-    label: "Consejos",
-    icon: (a) => <LightbulbIcon className={`h-5 w-5 ${a ? "stroke-[2.2]" : ""}`} />,
   },
 ];
 
