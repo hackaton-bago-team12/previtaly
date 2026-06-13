@@ -12,9 +12,14 @@ export default async function Home() {
     if (user) {
       const { data: profile } = await supabase
         .from("profiles")
-        .select("role")
+        .select("role, clinic_id")
         .eq("id", user.id)
         .maybeSingle();
+
+      // Usuario de Google sin clínica asignada → completar perfil
+      if (!profile?.clinic_id) {
+        redirect("/completar-perfil");
+      }
 
       const role = profile?.role ?? "medico";
       redirect(role === "analista" ? "/analista" : "/medico");
