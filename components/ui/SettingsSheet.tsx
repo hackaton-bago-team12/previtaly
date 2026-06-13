@@ -4,16 +4,6 @@ import { useState, useTransition } from "react";
 import { usePathname } from "next/navigation";
 import { isNavRoute } from "./BottomNav";
 
-type MenuItem = { label: string; icon: string };
-
-const MENU: MenuItem[] = [
-  { label: "Perfil", icon: "M12 12.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM5 20c1-3.5 4-5 7-5s6 1.5 7 5" },
-  { label: "Mi cuenta y datos", icon: "M4 7h16M4 12h16M4 17h10" },
-  { label: "Notificaciones", icon: "M6 9a6 6 0 0 1 12 0c0 5 1.5 7 1.5 7H4.5S6 14 6 9ZM10 20a2 2 0 0 0 4 0" },
-  { label: "Cambiar contraseña", icon: "M6 10V7a4 4 0 0 1 8 0v3M5 10h14v10H5z" },
-  { label: "Ayuda y soporte", icon: "M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17ZM12 12a3.5 3.5 0 1 0 0-7M5.5 5.5l3 3M15.5 15.5l3 3" },
-];
-
 export function SettingsSheet({
   role,
   name,
@@ -70,7 +60,7 @@ export function SettingsSheet({
       {open && (
         <div
           onClick={() => setOpen(false)}
-          className="fixed inset-0 z-40 flex items-end"
+          className="fixed inset-0 z-[60] flex items-end"
           style={{ background: "rgba(20,36,30,.4)", animation: "fadeIn .2s ease" }}
         >
           <div
@@ -97,31 +87,6 @@ export function SettingsSheet({
                 <div style={{ fontSize: 18, fontWeight: 700, letterSpacing: "-.01em" }}>{name}</div>
                 <div style={{ fontSize: 13.5, color: "var(--color-text-muted)" }}>{subtitle}</div>
               </div>
-            </div>
-
-            {/* Menú de cuenta */}
-            <div style={{ background: "#fff", border: "1px solid var(--color-border)", borderRadius: 16, overflow: "hidden", marginBottom: 14 }}>
-              {MENU.map((m, i) => (
-                <button
-                  key={m.label}
-                  type="button"
-                  onClick={() => setOpen(false)}
-                  className="flex w-full items-center gap-[14px]"
-                  style={{
-                    padding: "15px 16px",
-                    borderBottom: i < MENU.length - 1 ? "1px solid #eef4f1" : "none",
-                    textAlign: "left",
-                    cursor: "pointer",
-                    background: "transparent",
-                  }}
-                >
-                  <span style={{ color: "var(--color-primary)" }}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={m.icon} /></svg>
-                  </span>
-                  <span style={{ flex: 1, fontSize: 15, fontWeight: 500, color: "var(--color-text)" }}>{m.label}</span>
-                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-soft)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6" /></svg>
-                </button>
-              ))}
             </div>
 
             {/* Cerrar sesión */}
