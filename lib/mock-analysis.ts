@@ -61,15 +61,15 @@ export function generateMockAnalysis(input: MockAnalysisInput): MockAnalysisResu
   // Detectados
   const detectados: { icono: string; texto: string }[] = [];
   if (stressSignals >= 2)
-    detectados.push({ icono: "💬", texto: "Tu lenguaje muestra cansancio y desconexión." });
+    detectados.push({ icono: "chat", texto: "Tu lenguaje muestra cansancio y desconexión." });
   if (comidas < 3)
-    detectados.push({ icono: "🍽️", texto: `Salteaste ${3 - comidas} comida(s) hoy.` });
+    detectados.push({ icono: "food", texto: `Salteaste ${3 - comidas} comida(s) hoy.` });
   if (energia <= 4)
-    detectados.push({ icono: "⚡", texto: "Reportaste un nivel de energía muy bajo." });
+    detectados.push({ icono: "energy", texto: "Reportaste un nivel de energía muy bajo." });
   if (capacidadRestante < 30)
-    detectados.push({ icono: "📋", texto: "Carga 30% mayor a tu promedio habitual." });
+    detectados.push({ icono: "clipboard", texto: "Carga 30% mayor a tu promedio habitual." });
   if (detectados.length === 0)
-    detectados.push({ icono: "✅", texto: "No detecté señales de alerta significativas hoy." });
+    detectados.push({ icono: "ok", texto: "No detecté señales de alerta significativas hoy." });
 
   // Sugerencias
   const sugerencias: MockAnalysisResult["sugerencias"] = [];
@@ -79,33 +79,33 @@ export function generateMockAnalysis(input: MockAnalysisInput): MockAnalysisResu
       tipo: "primaria",
       titulo: "Tomá un descanso ahora",
       descripcion: "Cinco minutos de respiración profunda antes de tu próxima consulta reducen el cortisol un 23%.",
-      icono: "🌬️",
+      icono: "breath",
     });
     sugerencias.push({
       tipo: "secundaria",
       titulo: "Considerá hablar con alguien",
       descripcion: "Tu analista puede gestionar una evaluación psicológica si esta carga persiste.",
-      icono: "🗣️",
+      icono: "support",
     });
   } else if (nivelRiesgo === "medio") {
     sugerencias.push({
       tipo: "primaria",
       titulo: "Protege tu descanso de hoy",
       descripcion: "Evitá revisar mensajes de trabajo después de las 20 hs. Tu recuperación nocturna es crítica.",
-      icono: "🌙",
+      icono: "rest",
     });
     sugerencias.push({
       tipo: "secundaria",
       titulo: "Redistribuí una consulta del jueves",
       descripcion: "Llevás 3 días seguidos en alza de carga.",
-      icono: "🔄",
+      icono: "refresh",
     });
   } else {
     sugerencias.push({
       tipo: "primaria",
       titulo: "¡Buen trabajo hoy!",
       descripcion: "Tu estado es óptimo. Mantené la rutina de actividad física que está funcionando.",
-      icono: "🏃",
+      icono: "activity",
     });
   }
 
@@ -114,7 +114,7 @@ export function generateMockAnalysis(input: MockAnalysisInput): MockAnalysisResu
       tipo: "secundaria",
       titulo: "Planificá tus comidas mañana",
       descripcion: "Saltear comidas afecta tu concentración y estado de ánimo durante la jornada.",
-      icono: "🍎",
+      icono: "food",
     });
   }
 

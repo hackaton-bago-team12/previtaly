@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { signupMedico, type SignupState } from "../actions";
 import { HeartPulseIcon } from "@/components/ui/icons";
+import { SelectField } from "@/components/ui/SelectField";
 
 const initial: SignupState = {};
 
@@ -47,17 +48,8 @@ export default function SignupMedicoPage() {
           <Field label="Nombre completo" name="fullName" type="text"
                  placeholder="Dr. Martín García" autoComplete="name" />
 
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-medium" style={{ color: "var(--color-text-muted)" }}>
-              Especialidad
-            </span>
-            <select name="specialty" className="input" style={{ color: "var(--color-text)" }}>
-              <option value="">Seleccioná tu especialidad</option>
-              {ESPECIALIDADES.map((e) => (
-                <option key={e} value={e}>{e}</option>
-              ))}
-            </select>
-          </label>
+          <SelectField name="specialty" label="Especialidad" options={ESPECIALIDADES}
+                       placeholder="Seleccioná tu especialidad" />
 
           <Field label="Email" name="email" type="email"
                  placeholder="dr.garcia@clinica.com" autoComplete="email" />

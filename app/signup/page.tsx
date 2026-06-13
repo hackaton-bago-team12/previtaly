@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HeartPulseIcon } from "@/components/ui/icons";
+import { HeartPulseIcon, StethoscopeIcon, BuildingIcon, ChevronRightIcon } from "@/components/ui/icons";
 
 export default function SignupRolePage() {
   return (
@@ -28,9 +28,9 @@ export default function SignupRolePage() {
             <div className="card cursor-pointer transition-all hover:shadow-md active:scale-95"
                  style={{ borderColor: "var(--color-primary-soft)" }}>
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl text-2xl"
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl"
                      style={{ background: "var(--color-primary-lt)" }}>
-                  🩺
+                  <StethoscopeIcon className="h-6 w-6" style={{ color: "var(--color-primary)" }} />
                 </div>
                 <div>
                   <p className="font-semibold" style={{ color: "var(--color-text)" }}>
@@ -40,10 +40,7 @@ export default function SignupRolePage() {
                     Registro mi bienestar y carga laboral diaria
                   </p>
                 </div>
-                <svg className="ml-auto h-5 w-5 flex-shrink-0" style={{ color: "var(--color-text-subtle)" }}
-                     fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
+                <ChevronRightIcon className="ml-auto h-5 w-5 flex-shrink-0" style={{ color: "var(--color-text-subtle)" }} />
               </div>
             </div>
           </Link>
@@ -52,22 +49,19 @@ export default function SignupRolePage() {
             <div className="card cursor-pointer transition-all hover:shadow-md active:scale-95"
                  style={{ borderColor: "var(--color-primary-soft)" }}>
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl text-2xl"
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl"
                      style={{ background: "var(--color-primary-lt)" }}>
-                  📊
+                  <BuildingIcon className="h-6 w-6" style={{ color: "var(--color-primary)" }} />
                 </div>
                 <div>
                   <p className="font-semibold" style={{ color: "var(--color-text)" }}>
-                    Soy analista
+                    Soy una clínica
                   </p>
                   <p className="mt-0.5 text-sm" style={{ color: "var(--color-text-muted)" }}>
-                    Monitoreo el estado del equipo médico de mi clínica
+                    Monitoreo el bienestar de mi equipo médico
                   </p>
                 </div>
-                <svg className="ml-auto h-5 w-5 flex-shrink-0" style={{ color: "var(--color-text-subtle)" }}
-                     fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
+                <ChevronRightIcon className="ml-auto h-5 w-5 flex-shrink-0" style={{ color: "var(--color-text-subtle)" }} />
               </div>
             </div>
           </Link>

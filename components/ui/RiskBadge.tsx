@@ -1,10 +1,12 @@
+import { StatusDot } from "@/components/ui/analysis-icon";
+
 type RiskLevel = "bajo" | "medio" | "alto";
 type Tendencia = "subiendo" | "estable" | "bajando";
 
 const riskConfig = {
-  bajo:  { label: "Riesgo bajo",       bg: "var(--color-risk-low-bg)",  color: "var(--color-risk-low)",  light: "🟢" },
-  medio: { label: "Riesgo medio-alto", bg: "var(--color-risk-mid-bg)",  color: "var(--color-risk-mid)",  light: "🟡" },
-  alto:  { label: "Riesgo alto",       bg: "var(--color-risk-high-bg)", color: "var(--color-risk-high)", light: "🔴" },
+  bajo:  { label: "Riesgo bajo",       bg: "var(--color-risk-low-bg)",  color: "var(--color-risk-low)" },
+  medio: { label: "Riesgo medio-alto", bg: "var(--color-risk-mid-bg)",  color: "var(--color-risk-mid)" },
+  alto:  { label: "Riesgo alto",       bg: "var(--color-risk-high-bg)", color: "var(--color-risk-high)" },
 };
 
 const tendenciaConfig = {
@@ -62,9 +64,10 @@ function TrafficLight({ nivel }: { nivel: RiskLevel }) {
 export function RiskChip({ nivel }: { nivel: RiskLevel }) {
   const cfg = riskConfig[nivel];
   return (
-    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold"
+    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"
           style={{ background: cfg.bg, color: cfg.color }}>
-      {cfg.light} {cfg.label}
+      <StatusDot level={nivel} />
+      {cfg.label}
     </span>
   );
 }

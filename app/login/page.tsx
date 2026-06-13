@@ -7,7 +7,8 @@ import { Suspense } from "react";
 import { login, type AuthState } from "./actions";
 import { hasEnvVars } from "@/lib/utils";
 import { SetupNotice } from "@/components/setup-notice";
-import { HeartPulseIcon } from "@/components/ui/icons";
+import { HeartPulseIcon, CheckIcon } from "@/components/ui/icons";
+import { GoogleButton } from "@/components/auth/GoogleButton";
 
 const initialState: AuthState = {};
 
@@ -39,11 +40,20 @@ function LoginForm() {
         {!hasEnvVars && <SetupNotice />}
 
         {registered && (
-          <div className="mb-4 rounded-xl px-4 py-3 text-sm"
+          <div className="mb-4 flex items-start gap-2 rounded-xl px-4 py-3 text-sm"
                style={{ background: "var(--color-primary-lt)", color: "var(--color-primary)" }}>
-            ✓ Cuenta creada. Revisá tu email para confirmarla, luego iniciá sesión.
+            <CheckIcon className="h-4 w-4 mt-0.5 shrink-0" />
+            <span>Cuenta creada. Revisá tu email para confirmarla, luego iniciá sesión.</span>
           </div>
         )}
+
+        <GoogleButton />
+
+        <div className="my-5 flex items-center gap-3">
+          <span className="h-px flex-1" style={{ background: "var(--color-border)" }} />
+          <span className="text-xs" style={{ color: "var(--color-text-subtle)" }}>o con tu email</span>
+          <span className="h-px flex-1" style={{ background: "var(--color-border)" }} />
+        </div>
 
         <form action={formAction} className="card space-y-4" style={{ borderColor: "var(--color-border)" }}>
           <Field label="Email" name="email" type="email"

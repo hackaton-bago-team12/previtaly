@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { LightbulbIcon } from "@/components/ui/icons";
+import { LightbulbIcon, ChartIcon } from "@/components/ui/icons";
+import { AnalysisIcon, StatusDot } from "@/components/ui/analysis-icon";
 
 type AnalysisRow = {
   medico_id: string;
@@ -90,13 +91,13 @@ export default async function SugerenciasAnalistaPage() {
   // Sugerencias de acción clínica
   const acciones = [
     ...(highRiskMedicos.length > 0
-      ? [{ icono: "🧠", titulo: "Sesión de apoyo psicológico", descripcion: `Coordinar una evaluación para ${highRiskMedicos.length} médico${highRiskMedicos.length > 1 ? "s" : ""} en riesgo alto antes del próximo turno largo.`, urgencia: "alta" as const }]
+      ? [{ icono: "support", titulo: "Sesión de apoyo psicológico", descripcion: `Coordinar una evaluación para ${highRiskMedicos.length} médico${highRiskMedicos.length > 1 ? "s" : ""} en riesgo alto antes del próximo turno largo.`, urgencia: "alta" as const }]
       : []),
     ...(avgStress !== null && avgStress > 50
-      ? [{ icono: "🧘", titulo: "Taller de manejo del estrés", descripcion: "Un taller grupal de 2 horas reduce la carga percibida del equipo hasta un 30%. Ideal fuera del horario de consultas.", urgencia: "media" as const }]
+      ? [{ icono: "leaf", titulo: "Taller de manejo del estrés", descripcion: "Un taller grupal de 2 horas reduce la carga percibida del equipo hasta un 30%. Ideal fuera del horario de consultas.", urgencia: "media" as const }]
       : []),
-    { icono: "📋", titulo: "Revisión de carga horaria", descripcion: "Analizar si la distribución de guardias es equitativa. Considerar rotar responsabilidades semanalmente.", urgencia: "media" as const },
-    { icono: "💬", titulo: "Reunión de equipo quincenal", descripcion: "Espacio de 30 minutos sin agenda clínica para que el equipo exprese preocupaciones. Previene acumulación silenciosa.", urgencia: "baja" as const },
+    { icono: "clipboard", titulo: "Revisión de carga horaria", descripcion: "Analizar si la distribución de guardias es equitativa. Considerar rotar responsabilidades semanalmente.", urgencia: "media" as const },
+    { icono: "chat", titulo: "Reunión de equipo quincenal", descripcion: "Espacio de 30 minutos sin agenda clínica para que el equipo exprese preocupaciones. Previene acumulación silenciosa.", urgencia: "baja" as const },
   ];
 
   const urgenciaConfig = {
@@ -151,7 +152,7 @@ export default async function SugerenciasAnalistaPage() {
 
       {withData === 0 && (
         <div className="card text-center py-10">
-          <p className="text-3xl mb-2">📊</p>
+          <ChartIcon className="h-8 w-8 mx-auto mb-2" style={{ color: "var(--color-text-subtle)" }} />
           <p className="font-medium" style={{ color: "var(--color-text)" }}>Sin datos aún</p>
           <p className="text-sm mt-1" style={{ color: "var(--color-text-muted)" }}>
             Las conclusiones aparecen cuando los médicos realicen sus check-ins.
@@ -174,9 +175,10 @@ export default async function SugerenciasAnalistaPage() {
                                  c.tipo === "atencion" ? "var(--color-risk-mid-bg)" :
                                  "var(--color-primary-lt)",
                    }}>
-                <span className="text-xl flex-shrink-0">
-                  {c.tipo === "critica" ? "🔴" : c.tipo === "atencion" ? "🟡" : "🟢"}
-                </span>
+                <StatusDot
+                  level={c.tipo === "critica" ? "alto" : c.tipo === "atencion" ? "medio" : "bajo"}
+                  className="flex-shrink-0 mt-1.5"
+                />
                 <p className="text-sm" style={{
                   color: c.tipo === "critica" ? "var(--color-risk-high)" :
                          c.tipo === "atencion" ? "var(--color-risk-mid)" :
@@ -201,9 +203,9 @@ export default async function SugerenciasAnalistaPage() {
             const cfg = urgenciaConfig[a.urgencia];
             return (
               <div key={i} className="card flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-xl"
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                      style={{ background: cfg.bg }}>
-                  {a.icono}
+                  <AnalysisIcon name={a.icono} className="h-5 w-5" style={{ color: cfg.text }} />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-start justify-between gap-2 mb-0.5">

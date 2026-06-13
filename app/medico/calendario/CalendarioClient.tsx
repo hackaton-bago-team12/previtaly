@@ -150,7 +150,7 @@ export function CalendarioClient({
       {/* Appointment list */}
       {allAppointments.length === 0 ? (
         <div className="card text-center py-10">
-          <p className="text-3xl mb-2">📅</p>
+          <CalendarIcon className="h-8 w-8 mx-auto mb-2" style={{ color: "var(--color-text-subtle)" }} />
           <p className="font-medium" style={{ color: "var(--color-text-muted)" }}>
             No hay turnos para hoy
           </p>

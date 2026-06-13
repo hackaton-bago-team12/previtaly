@@ -3,7 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { RiskBadge } from "@/components/ui/RiskBadge";
 import { PulseChart, DonutChart, PerformanceCurveChart } from "@/components/ui/PulseChart";
-import { HeartPulseIcon } from "@/components/ui/icons";
+import { HeartPulseIcon, ClipboardIcon } from "@/components/ui/icons";
+import { AnalysisIcon } from "@/components/ui/analysis-icon";
 
 export default async function ResultadosPage() {
   const supabase = await createClient();
@@ -125,7 +126,7 @@ export default async function ResultadosPage() {
 
       {!latest ? (
         <div className="card text-center py-12">
-          <p className="text-3xl mb-3">📋</p>
+          <ClipboardIcon className="h-8 w-8 mx-auto mb-3" style={{ color: "var(--color-text-subtle)" }} />
           <p className="font-semibold mb-1" style={{ color: "var(--color-text)" }}>
             Todavía no tenés análisis
           </p>
@@ -239,7 +240,7 @@ export default async function ResultadosPage() {
                 {detectados.map((d, i) => (
                   <div key={i} className="flex items-start gap-3 p-3 rounded-xl"
                        style={{ background: "var(--color-bg)" }}>
-                    <span className="text-xl flex-shrink-0">{d.icono}</span>
+                    <AnalysisIcon name={d.icono} className="h-5 w-5 flex-shrink-0" style={{ color: "var(--color-primary)" }} />
                     <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>{d.texto}</p>
                   </div>
                 ))}

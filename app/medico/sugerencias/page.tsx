@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-import { LightbulbIcon } from "@/components/ui/icons";
+import { LightbulbIcon, AlertIcon } from "@/components/ui/icons";
+import { AnalysisIcon } from "@/components/ui/analysis-icon";
 
 type Sugerencia = {
   tipo: "primaria" | "secundaria";
@@ -33,17 +34,17 @@ export default async function SugerenciasPage() {
     {
       titulo: "Respiración 4-7-8",
       descripcion: "Inhalá 4 segundos, retené 7, exhalá 8. Repite 4 veces. Activa el sistema nervioso parasimpático.",
-      icono: "🌬️",
+      icono: "breath",
     },
     {
       titulo: "Caminata de 10 minutos",
       descripcion: "Salir a caminar entre consultas reduce el cortisol y mejora la claridad mental.",
-      icono: "🚶",
+      icono: "activity",
     },
     {
       titulo: "Hidratación consciente",
       descripcion: "Un vaso de agua cada hora de guardia. La deshidratación leve afecta la concentración un 15%.",
-      icono: "💧",
+      icono: "water",
     },
   ];
 
@@ -62,7 +63,7 @@ export default async function SugerenciasPage() {
 
       {!latest ? (
         <div className="card text-center py-10 mb-5">
-          <p className="text-3xl mb-3">💡</p>
+          <LightbulbIcon className="h-8 w-8 mx-auto mb-3" style={{ color: "var(--color-text-subtle)" }} />
           <p className="font-semibold mb-1" style={{ color: "var(--color-text)" }}>
             Hacé tu primer check-in
           </p>
@@ -83,9 +84,9 @@ export default async function SugerenciasPage() {
                 <div className="rounded-2xl p-5 text-white"
                      style={{ background: "var(--color-primary)" }}>
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-xl"
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                          style={{ background: "rgba(255,255,255,0.15)" }}>
-                      {primaria.icono}
+                      <AnalysisIcon name={primaria.icono} className="h-5 w-5" style={{ color: "#fff" }} />
                     </div>
                     <div>
                       <p className="font-semibold leading-tight">{primaria.titulo}</p>
@@ -98,9 +99,9 @@ export default async function SugerenciasPage() {
               {/* Acciones secundarias */}
               {secundarias.map((s, i) => (
                 <div key={i} className="card flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-xl"
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                        style={{ background: "var(--color-primary-lt)" }}>
-                    {s.icono}
+                    <AnalysisIcon name={s.icono} className="h-5 w-5" style={{ color: "var(--color-primary)" }} />
                   </div>
                   <div>
                     <p className="font-semibold text-sm" style={{ color: "var(--color-text)" }}>
@@ -130,9 +131,9 @@ export default async function SugerenciasPage() {
         <div className="space-y-3">
           {generales.map((g, i) => (
             <div key={i} className="card flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-xl"
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                    style={{ background: "var(--color-primary-lt)" }}>
-                {g.icono}
+                <AnalysisIcon name={g.icono} className="h-5 w-5" style={{ color: "var(--color-primary)" }} />
               </div>
               <div>
                 <p className="font-semibold text-sm" style={{ color: "var(--color-text)" }}>
@@ -151,8 +152,9 @@ export default async function SugerenciasPage() {
       {latest?.nivel_riesgo === "alto" && (
         <div className="mt-5 rounded-2xl p-5 border-2"
              style={{ borderColor: "var(--color-risk-high)", background: "var(--color-risk-high-bg)" }}>
-          <p className="font-bold mb-1" style={{ color: "var(--color-risk-high)" }}>
-            🔴 Evaluación recomendada
+          <p className="font-bold mb-1 flex items-center gap-1.5" style={{ color: "var(--color-risk-high)" }}>
+            <AlertIcon className="h-4 w-4" style={{ color: "var(--color-risk-high)" }} />
+            Evaluación recomendada
           </p>
           <p className="text-sm mb-3" style={{ color: "#7f1d1d" }}>
             Tu analista puede agendar una sesión con el equipo de salud mental de tu clínica.

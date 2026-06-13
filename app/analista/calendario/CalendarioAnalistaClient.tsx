@@ -3,8 +3,9 @@
 import { useState, useActionState } from "react";
 import { assignShift, unassignShift, addExtraShift } from "../actions";
 import { TIPO_COLORS } from "@/lib/mock-appointments";
-import { CalendarIcon, PlusIcon } from "@/components/ui/icons";
+import { CalendarIcon, PlusIcon, ClipboardIcon, BuildingIcon, AlertIcon, CheckIcon } from "@/components/ui/icons";
 import { RiskChip } from "@/components/ui/RiskBadge";
+import { StatusDot } from "@/components/ui/analysis-icon";
 
 type Medico = { id: string; full_name: string | null; specialty: string | null };
 type Appointment = {
@@ -101,9 +102,10 @@ export function CalendarioAnalistaClient({
                          onClick={() => setFilterMedico(m.id)}>
                 {m.full_name?.split(" ").slice(-1)[0] ?? "—"}
                 {riskMap[m.id] && (
-                  <span className="ml-1.5 text-[10px]">
-                    {riskMap[m.id].nivel === "alto" ? "🔴" : riskMap[m.id].nivel === "medio" ? "🟡" : "🟢"}
-                  </span>
+                  <StatusDot
+                    level={riskMap[m.id].nivel as "bajo" | "medio" | "alto"}
+                    className="ml-1.5"
+                  />
                 )}
               </FilterBtn>
             ))}
@@ -111,7 +113,7 @@ export function CalendarioAnalistaClient({
 
           {filteredAppts.length === 0 ? (
             <div className="card text-center py-10">
-              <p className="text-3xl mb-2">📅</p>
+              <CalendarIcon className="h-8 w-8 mx-auto mb-2" style={{ color: "var(--color-text-subtle)" } as React.CSSProperties} />
               <p style={{ color: "var(--color-text-muted)" }}>
                 {filterMedico === "todos"
                   ? "No hay turnos registrados"
@@ -132,7 +134,7 @@ export function CalendarioAnalistaClient({
                 {hasMock && (
                   <div className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs"
                        style={{ background: "var(--color-primary-light)", color: "var(--color-primary)" }}>
-                    <span>📋</span>
+                    <ClipboardIcon className="h-4 w-4 flex-shrink-0" style={{ color: "var(--color-primary)" } as React.CSSProperties} />
                     <span>Datos de demostración — se reemplazarán al integrar el CRM de la clínica.</span>
                   </div>
                 )}
@@ -247,7 +249,7 @@ export function CalendarioAnalistaClient({
 
           {extraShifts.length === 0 ? (
             <div className="card text-center py-10">
-              <p className="text-3xl mb-2">🏥</p>
+              <BuildingIcon className="h-8 w-8 mx-auto mb-2" style={{ color: "var(--color-text-subtle)" } as React.CSSProperties} />
               <p style={{ color: "var(--color-text-muted)" }}>No hay guardias extra creadas</p>
             </div>
           ) : (
@@ -298,7 +300,8 @@ export function CalendarioAnalistaClient({
                     {isBlockError && (
                       <div className="mb-3 rounded-xl p-3 text-sm"
                            style={{ background: "var(--color-risk-high-bg)", color: "var(--color-risk-high)" }}>
-                        🚫 {assignError.msg}
+                        <AlertIcon className="h-4 w-4 inline mr-1" style={{ color: "var(--color-risk-high)" } as React.CSSProperties} />
+                        {assignError.msg}
                       </div>
                     )}
 
@@ -325,7 +328,9 @@ export function CalendarioAnalistaClient({
                                   color:       blocked ? "var(--color-risk-high)" : "var(--color-text)",
                                 }}
                               >
-                                {blocked ? "⚠️" : "✓"}{" "}
+                                {blocked
+                                  ? <AlertIcon className="h-4 w-4" style={{ color: "var(--color-risk-high)" } as React.CSSProperties} />
+                                  : <CheckIcon className="h-4 w-4" style={{ color: "var(--color-text)" } as React.CSSProperties} />}
                                 {m.full_name?.split(" ").slice(-1)[0] ?? "—"}
                               </button>
                             );

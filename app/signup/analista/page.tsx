@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { signupAnalista, type SignupState } from "../actions";
-import { HeartPulseIcon, CreditCardIcon, CheckCircleIcon, ShieldCheckIcon } from "@/components/ui/icons";
+import { HeartPulseIcon, CreditCardIcon, CheckCircleIcon, ShieldCheckIcon, CheckIcon } from "@/components/ui/icons";
 
 type Plan = "basico" | "avanzado";
 type Step = "plan" | "datos" | "pago" | "exito";
@@ -34,7 +34,7 @@ const PLANES = {
       "Check-in con audio IA (Azure Speech)",
       "Análisis predictivo de burnout",
       "Historial ilimitado + exportación",
-      "Dashboard analista completo",
+      "Dashboard de clínica completo",
       "Soporte prioritario 24/7",
     ],
     color: "var(--color-primary)",
@@ -122,7 +122,7 @@ export default function SignupAnalistaPage() {
                     {info.features.map((f) => (
                       <li key={f} className="flex items-center gap-2 text-xs"
                           style={{ color: "var(--color-text-muted)" }}>
-                        <span style={{ color: "var(--color-risk-low)" }}>✓</span>
+                        <CheckIcon className="h-3.5 w-3.5 shrink-0" style={{ color: "var(--color-risk-low)" }} />
                         {f}
                       </li>
                     ))}
@@ -440,7 +440,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
               color: n <= current ? "#fff" : "var(--color-text-subtle)",
             }}
           >
-            {n < current ? "✓" : n}
+            {n < current ? <CheckIcon className="h-4 w-4" /> : n}
           </div>
           {n < total && (
             <div className="w-8 h-0.5 rounded"
@@ -461,7 +461,7 @@ function Field({
   label: string;
   value: string;
   onChange: (v: string) => void;
-} & React.InputHTMLAttributes<HTMLInputElement>) {
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange">) {
   return (
     <label className="block">
       <span className="mb-1.5 block text-sm font-medium" style={{ color: "var(--color-text-muted)" }}>

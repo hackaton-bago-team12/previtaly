@@ -22,6 +22,16 @@ export function MicIcon({ className, style }: IconProps) {
   );
 }
 
+export function ChatIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round"
+            d="M8 10.5h8M8 14h5m-8.5 5.5L3 21V6a2 2 0 012-2h14a2 2 0 012 2v9a2 2 0 01-2 2H8.5a2 2 0 00-1.4.58z" />
+    </svg>
+  );
+}
+
 export function CalendarIcon({ className, style }: IconProps) {
   return (
     <svg className={className} style={style} fill="none" stroke="currentColor"
@@ -146,6 +156,139 @@ export function ShieldCheckIcon({ className, style }: IconProps) {
          strokeWidth={1.8} viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round"
             d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+    </svg>
+  );
+}
+
+export function CheckIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={2} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+    </svg>
+  );
+}
+
+export function StethoscopeIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 3v5a5 5 0 0010 0V3" />
+      <path d="M5 3h2M13 3h2" />
+      <path d="M10 13v2a6 6 0 0012 0" />
+      <circle cx="20" cy="10" r="2" />
+    </svg>
+  );
+}
+
+export function BuildingIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 21V5a2 2 0 012-2h12a2 2 0 012 2v16M2 21h20M9 21v-4h6v4" />
+      <path d="M12 6v4M10 8h4" />
+    </svg>
+  );
+}
+
+export function ClipboardIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+    </svg>
+  );
+}
+
+export function LifebuoyIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="3.5" />
+      <path d="M5.6 5.6l3.3 3.3m6.2 6.2l3.3 3.3m0-12.8l-3.3 3.3m-6.2 6.2l-3.3 3.3" />
+    </svg>
+  );
+}
+
+export function LeafIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z" />
+      <path d="M2 21c0-3 1.85-5.36 5.08-6" />
+    </svg>
+  );
+}
+
+export function WindIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1014 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2" />
+    </svg>
+  );
+}
+
+export function MoonIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+    </svg>
+  );
+}
+
+export function RefreshIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 12a9 9 0 0115.5-6.36L21 8M21 3v5h-5M21 12a9 9 0 01-15.5 6.36L3 16M3 21v-5h5" />
+    </svg>
+  );
+}
+
+export function ActivityIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+    </svg>
+  );
+}
+
+export function ForkKnifeIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 3v6a2 2 0 004 0V3M6 11v10M17 3c-1.66 0-3 1.79-3 4v5h3m0-9v18" />
+    </svg>
+  );
+}
+
+export function DropletIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z" />
+    </svg>
+  );
+}
+
+export function BoltIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+    </svg>
+  );
+}
+
+export function AlertIcon({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} fill="none" stroke="currentColor"
+         strokeWidth={1.8} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4m0 4h.01" />
     </svg>
   );
 }

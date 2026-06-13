@@ -6,6 +6,7 @@ import {
   HeartPulseIcon,
   MicIcon,
   ChartIcon,
+  ChatIcon,
   LightbulbIcon,
   UsersIcon,
   ChevronRightIcon,
@@ -69,10 +70,10 @@ export function Landing() {
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
             <Link href="/login" className="text-sm px-3 py-2" style={{ color: "var(--lp-muted)" }}>
-              Ingresar
+              Iniciar sesión
             </Link>
-            <Link href="/signup" className="lp-btn lp-btn-primary !py-2.5 !px-4 text-sm">
-              Probar gratis
+            <Link href="/signup" className="lp-btn lp-btn-primary !py-2 !px-3.5 !text-[0.82rem]">
+              Registrate
             </Link>
           </div>
         </nav>
@@ -81,9 +82,8 @@ export function Landing() {
       {/* ── Hero ──────────────────────────────────────────────── */}
       <section className="lp-bg-radial relative overflow-hidden">
         <div className="mx-auto max-w-6xl px-5 pt-32 pb-24 sm:pt-44 sm:pb-32 relative">
-          <p className="lp-reveal text-sm font-medium mb-6 inline-flex items-center gap-2"
+          <p className="lp-reveal text-sm font-medium mb-6"
              style={{ color: "var(--lp-line)" }}>
-            <span className="inline-block w-8 h-px" style={{ background: "var(--lp-line)" }} />
             Prevención de burnout para quienes cuidan
           </p>
 
@@ -101,13 +101,13 @@ export function Landing() {
             que el burnout te alcance.
           </p>
 
-          <div className="lp-reveal mt-9 flex flex-wrap items-center gap-4"
+          <div className="lp-reveal mt-9 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4"
                style={{ transitionDelay: "180ms" }}>
-            <Link href="/signup" className="lp-btn lp-btn-primary">
+            <Link href="/signup" className="lp-btn lp-btn-primary w-full sm:w-auto">
               <MicIcon className="h-5 w-5" />
               Probar el check-in
             </Link>
-            <a href="#como" className="lp-btn lp-btn-ghost">
+            <a href="#como" className="lp-btn lp-btn-ghost w-full sm:w-auto">
               Ver cómo funciona
               <ChevronRightIcon className="h-4 w-4" />
             </a>
@@ -260,7 +260,7 @@ export function Landing() {
 
             <div className="mt-6 space-y-3">
               <div className="flex items-start gap-3 text-sm">
-                <span>💬</span>
+                <ChatIcon className="h-4 w-4 mt-0.5 shrink-0" style={{ color: "var(--lp-line)" }} />
                 <span style={{ color: "var(--lp-muted)" }}>Tu lenguaje muestra cansancio acumulado.</span>
               </div>
               <div className="rounded-xl p-4" style={{ background: "var(--lp-surface-2)" }}>
@@ -295,7 +295,7 @@ export function Landing() {
                 redistribuí guardias y reducí rotación y ausentismo —sin invadir la privacidad de nadie.
               </p>
             </div>
-            <Link href="/signup/analista" className="lp-btn lp-btn-ghost shrink-0">
+            <Link href="/signup/analista" className="lp-btn lp-btn-ghost shrink-0 w-full md:w-auto">
               Ver el panel del analista
               <ChevronRightIcon className="h-4 w-4" />
             </Link>
@@ -316,13 +316,13 @@ export function Landing() {
           <p className="lp-reveal mt-6 text-lg max-w-xl mx-auto" style={{ color: "var(--lp-muted)", transitionDelay: "80ms" }}>
             Tu primer check-in lleva menos de lo que tarda un café.
           </p>
-          <div className="lp-reveal mt-10 flex flex-wrap items-center justify-center gap-4"
+          <div className="lp-reveal mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto sm:max-w-none"
                style={{ transitionDelay: "140ms" }}>
-            <Link href="/signup" className="lp-btn lp-btn-primary">
+            <Link href="/signup" className="lp-btn lp-btn-primary w-full sm:w-auto">
               <MicIcon className="h-5 w-5" />
               Probar el check-in
             </Link>
-            <Link href="/login" className="lp-btn lp-btn-ghost">
+            <Link href="/login" className="lp-btn lp-btn-ghost w-full sm:w-auto">
               Ya tengo cuenta
             </Link>
           </div>

@@ -127,7 +127,7 @@ export default async function AnalistaHomePage() {
       {/* Lista de médicos */}
       {medicoRows.length === 0 ? (
         <div className="card text-center py-10">
-          <p className="text-3xl mb-2">👥</p>
+          <UsersIcon className="h-8 w-8 mx-auto mb-2" style={{ color: "var(--color-text-subtle)" } as React.CSSProperties} />
           <p className="font-medium mb-1" style={{ color: "var(--color-text)" }}>
             No hay médicos registrados
           </p>

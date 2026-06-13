@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
-import { MicIcon } from "@/components/ui/icons";
+import { MicIcon, CheckIcon } from "@/components/ui/icons";
 
 type Props = {
   onTranscript: (text: string) => void;
@@ -191,7 +191,7 @@ export function VoiceRecorder({ onTranscript, disabled }: Props) {
     <div className="flex flex-col items-center gap-3 w-full">
       <div className="w-16 h-16 rounded-full flex items-center justify-center"
            style={{ background: "var(--color-primary-light)" }}>
-        <span className="text-2xl">✓</span>
+        <CheckIcon className="h-7 w-7" style={{ color: "var(--color-primary)" }} />
       </div>
       <p className="text-sm font-medium" style={{ color: "var(--color-primary)" }}>
         Grabación completada · {fmtElapsed(elapsed)}

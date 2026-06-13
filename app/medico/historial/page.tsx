@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
-import { ClockIcon } from "@/components/ui/icons";
+import { ClockIcon, ClipboardIcon } from "@/components/ui/icons";
+import { AnalysisIcon } from "@/components/ui/analysis-icon";
 import { PulseChart, DonutChart } from "@/components/ui/PulseChart";
 
 type AnalysisRow = {
@@ -130,7 +131,7 @@ export default async function HistorialPage() {
 
       {history.length === 0 ? (
         <div className="card text-center py-12">
-          <p className="text-3xl mb-3">📋</p>
+          <ClipboardIcon className="h-8 w-8 mx-auto mb-3" style={{ color: "var(--color-text-subtle)" }} />
           <p className="font-semibold mb-1" style={{ color: "var(--color-text)" }}>
             Todavía no tenés registros
           </p>
@@ -263,7 +264,8 @@ export default async function HistorialPage() {
                                 border: "1px solid var(--color-border)",
                               }}
                             >
-                              {d.icono} {d.texto.length > 38 ? d.texto.slice(0, 38) + "…" : d.texto}
+                              <AnalysisIcon name={d.icono} className="h-3 w-3" style={{ color: "var(--color-primary)" }} />
+                              {d.texto.length > 38 ? d.texto.slice(0, 38) + "…" : d.texto}
                             </span>
                           ))}
                         </div>
