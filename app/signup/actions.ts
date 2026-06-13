@@ -20,7 +20,7 @@ export async function signupAnalista(
   const clinicName = String(formData.get("clinicName") ?? "").trim();
 
   if (!email || !password || !fullName || !clinicName)
-    return { error: "Completá todos los campos." };
+    return { error: "Completa todos los campos." };
   if (password.length < 6)
     return { error: "La contraseña debe tener al menos 6 caracteres." };
 
@@ -71,7 +71,7 @@ export async function signupMedico(
   const clinicCode = String(formData.get("clinicCode") ?? "").trim().toUpperCase();
 
   if (!email || !password || !fullName || !clinicCode)
-    return { error: "Completá todos los campos." };
+    return { error: "Completa todos los campos." };
   if (password.length < 6)
     return { error: "La contraseña debe tener al menos 6 caracteres." };
 
@@ -83,7 +83,7 @@ export async function signupMedico(
     .rpc("get_clinic_by_code", { p_code: clinicCode });
 
   if (!clinicId)
-    return { error: "Código de clínica inválido. Pedíselo a tu analista." };
+    return { error: "Código de clínica inválido. Pídelo a tu analista." };
 
   const clinic = { id: clinicId as string };
 

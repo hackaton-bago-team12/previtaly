@@ -55,7 +55,7 @@ export function VoiceRecorder({ onTranscript, disabled }: Props) {
   const startRecording = useCallback(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
-      alert("Tu navegador no soporta reconocimiento de voz. Podés escribir tu respuesta directamente.");
+      alert("Tu navegador no soporta reconocimiento de voz. Puedes escribir tu respuesta directamente.");
       return;
     }
 

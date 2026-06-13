@@ -49,7 +49,7 @@ export default function SignupMedicoPage() {
                      style={{ textTransform: "uppercase" }} />
             </label>
             <p className="mt-1.5 text-xs" style={{ color: "var(--color-text-subtle)" }}>
-              Tu analista tiene este código. Pedíselo si no lo tenés.
+              Tu analista tiene este código. Pídelo si no lo tienes.
             </p>
           </div>
 

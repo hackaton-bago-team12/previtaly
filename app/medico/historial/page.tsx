@@ -134,10 +134,10 @@ export default async function HistorialPage() {
         <div className="card text-center py-12">
           <ClipboardIcon className="h-8 w-8 mx-auto mb-3" style={{ color: "var(--color-text-subtle)" }} />
           <p className="font-semibold mb-1" style={{ color: "var(--color-text)" }}>
-            Todavía no tenés registros
+            Aún no tienes registros
           </p>
           <p className="text-sm mb-5" style={{ color: "var(--color-text-muted)" }}>
-            Completá tu primer check-in para empezar a ver tu historial.
+            Completa tu primer check-in para empezar a ver tu historial.
           </p>
           <Link href="/medico" className="btn-primary inline-block w-auto px-6">
             Hacer check-in →

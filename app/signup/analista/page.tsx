@@ -72,7 +72,7 @@ export default function SignupAnalistaPage() {
                 Elegí tu plan
               </h1>
               <p className="mt-1 text-sm" style={{ color: "var(--color-text-muted)" }}>
-                Podés cambiarlo en cualquier momento
+                Puedes cambiarlo cuando quieras
               </p>
             </div>
           </div>
@@ -186,7 +186,7 @@ export default function SignupAnalistaPage() {
             type="button"
             onClick={() => {
               if (!formData.fullName || !formData.clinicName || !formData.email || !formData.password)
-                return setError("Completá todos los campos.");
+                return setError("Completa todos los campos.");
               if (formData.password.length < 6)
                 return setError("La contraseña debe tener al menos 6 caracteres.");
               setError(null);
@@ -220,7 +220,7 @@ export default function SignupAnalistaPage() {
   if (step === "pago") {
     const handlePagar = () => {
       if (!cardData.numero || !cardData.titular || !cardData.vencimiento || !cardData.cvv)
-        return setError("Completá todos los datos de la tarjeta.");
+        return setError("Completa todos los datos de la tarjeta.");
       if (cardData.numero.replace(/\s/g, "").length < 16)
         return setError("El número de tarjeta debe tener 16 dígitos.");
       if (cardData.cvv.length < 3)
@@ -408,7 +408,7 @@ export default function SignupAnalistaPage() {
           </h2>
           <p className="mt-2 text-sm" style={{ color: "var(--color-text-muted)" }}>
             Tu suscripción al plan <strong>{PLANES[plan].nombre}</strong> fue procesada con éxito.
-            Compartí este código con tus médicos:
+            Comparte este código con tus médicos:
           </p>
           <div className="my-5 rounded-xl py-4 px-6 text-center text-2xl font-bold tracking-widest"
                style={{ background: "var(--color-primary-light)", color: "var(--color-primary)" }}>

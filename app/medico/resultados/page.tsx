@@ -122,10 +122,10 @@ export default async function ResultadosPage() {
         <div className="card text-center py-12">
           <ClipboardIcon className="h-8 w-8 mx-auto mb-3" style={{ color: "var(--color-text-subtle)" }} />
           <p className="font-semibold mb-1" style={{ color: "var(--color-text)" }}>
-            Todavía no tenés análisis
+            Aún no tienes análisis
           </p>
           <p className="text-sm mb-5" style={{ color: "var(--color-text-muted)" }}>
-            Completá tu check-in diario para ver tus resultados aquí.
+            Completa tu check-in diario para ver tus resultados aquí.
           </p>
           <Link href="/medico" className="btn-primary inline-block w-auto px-6">
             Hacer check-in →

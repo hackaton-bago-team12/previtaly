@@ -74,7 +74,7 @@ function LoginForm() {
         </form>
 
         <p className="mt-6 text-center text-sm" style={{ color: "var(--color-text-muted)" }}>
-          ¿No tenés cuenta?{" "}
+          ¿No tienes cuenta?{" "}
           <Link href="/signup" className="font-medium underline underline-offset-2"
                 style={{ color: "var(--color-primary)" }}>
             Registrate

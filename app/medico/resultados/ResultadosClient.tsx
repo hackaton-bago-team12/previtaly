@@ -152,7 +152,6 @@ export function ResultadosClient({ latest, prev, chartData, horasTrabajadas, fue
           </div>
         </div>
         {primaria && (
-          <p className="text-[10px] mt-3 opacity-60">Generado por IA según tu carga del día</p>
         )}
       </div>
 

@@ -11,7 +11,7 @@ export function SelectField({
   name,
   label,
   options,
-  placeholder = "Seleccioná una opción",
+  placeholder = "Selecciona una opción",
   defaultValue = "",
 }: {
   name: string;

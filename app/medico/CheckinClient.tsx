@@ -222,9 +222,6 @@ export function CheckinClient({ nombre }: { nombre: string }) {
               <button type="submit" disabled={pending} className="btn-primary">
                 {pending ? "Analizando tu día…" : "Analizar mi día →"}
               </button>
-              <p className="text-center text-xs mt-3" style={{ color: "var(--color-text-subtle)" }}>
-                + Generado por IA según tu estado y carga
-              </p>
             </div>
           </form>
         </div>
@@ -242,7 +239,7 @@ export function CheckinClient({ nombre }: { nombre: string }) {
             ← Volver
           </button>
           <h2 className="text-2xl font-bold mb-1" style={{ color: "var(--color-text)" }}>
-            ¿Cómo venís hoy?
+            ¿Cómo estás hoy?
           </h2>
           <p className="text-sm mb-8" style={{ color: "var(--color-text-muted)" }}>
             Un toque y listo. Sin formularios.

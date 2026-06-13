@@ -214,8 +214,8 @@ export function Landing() {
               No es un número más.
             </h2>
             <p className="lp-reveal mt-5 text-lg leading-relaxed" style={{ color: "var(--lp-muted)", transitionDelay: "80ms" }}>
-              Es una lectura diaria de cómo venís —en tu propio lenguaje— que se vuelve tendencia
-              con el tiempo. Cuando algo se desvía, lo ves venir. Y sabés qué hacer.
+              Es una lectura diaria de cómo estás —en tu propio lenguaje— que se vuelve tendencia
+              con el tiempo. Cuando algo se desvía, lo ves venir. Y sabes qué hacer.
             </p>
             <Link href="/signup" className="lp-reveal lp-btn lp-btn-ghost mt-8" style={{ transitionDelay: "140ms" }}>
               Quiero mi lectura
@@ -309,7 +309,7 @@ export function Landing() {
         <EkgLine className="absolute top-0 inset-x-0 w-full h-24 opacity-30" />
         <div className="mx-auto max-w-6xl px-5 py-28 text-center relative">
           <h2 className="lp-reveal text-3xl sm:text-5xl font-bold tracking-tight">
-            Empezá a cuidar
+            Empieza a cuidar
             <br />
             <span style={{ color: "var(--lp-line)" }}>a quien cuida.</span>
           </h2>

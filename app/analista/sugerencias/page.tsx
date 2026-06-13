@@ -225,9 +225,6 @@ export default async function SugerenciasAnalistaPage() {
             );
           })}
         </div>
-        <p className="text-xs text-center mt-4" style={{ color: "var(--color-text-subtle)" }}>
-          + Generado por IA según el estado del equipo
-        </p>
       </div>
     </div>
   );
