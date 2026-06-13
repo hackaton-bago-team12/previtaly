@@ -151,8 +151,6 @@ export function ResultadosClient({ latest, prev, chartData, horasTrabajadas, fue
             <p className="text-sm mt-1 opacity-85">{consejo.descripcion}</p>
           </div>
         </div>
-        {primaria && (
-        )}
       </div>
 
       {/* Toggle expandir */}
