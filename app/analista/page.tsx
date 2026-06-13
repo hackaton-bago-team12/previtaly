@@ -135,7 +135,7 @@ export default async function AnalistaHomePage() {
           </p>
         </div>
         <p className="text-xs text-right" style={{ color: "var(--color-text-subtle)" }}>
-          Compartí este código<br />con tus médicos
+          Comparte este código<br />con tus médicos
         </p>
       </div>
 
@@ -202,7 +202,7 @@ export default async function AnalistaHomePage() {
             No hay médicos registrados
           </p>
           <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>
-            Compartí el código{" "}
+            Comparte el código{" "}
             <span className="font-mono font-bold">{clinicCode}</span>{" "}
             para que los médicos se registren.
           </p>

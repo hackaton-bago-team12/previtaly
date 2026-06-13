@@ -31,7 +31,7 @@ function LoginForm() {
               Previtaly
             </h1>
             <p className="mt-1 text-sm" style={{ color: "var(--color-text-muted)" }}>
-              Iniciá sesión en tu cuenta
+              Inicia sesión en tu cuenta
             </p>
           </div>
         </div>
@@ -42,7 +42,7 @@ function LoginForm() {
           <div className="mb-4 flex items-start gap-2 rounded-xl px-4 py-3 text-sm"
                style={{ background: "var(--color-primary-lt)", color: "var(--color-primary)" }}>
             <CheckIcon className="h-4 w-4 mt-0.5 shrink-0" />
-            <span>Cuenta creada. Revisá tu email para confirmarla, luego iniciá sesión.</span>
+            <span>Cuenta creada. Revisá tu email para confirmarla, luego inicia sesión.</span>
           </div>
         )}
 
@@ -65,10 +65,10 @@ function LoginForm() {
         </form>
 
         <p className="mt-6 text-center text-sm" style={{ color: "var(--color-text-muted)" }}>
-          ¿No tenés cuenta?{" "}
+          ¿No tienes cuenta?{" "}
           <Link href="/signup" className="font-medium underline underline-offset-2"
                 style={{ color: "var(--color-primary)" }}>
-            Registrate
+            Regístrate
           </Link>
         </p>
       </div>

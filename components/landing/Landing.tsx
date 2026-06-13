@@ -73,7 +73,7 @@ export function Landing() {
               Iniciar sesión
             </Link>
             <Link href="/signup" className="lp-btn lp-btn-primary !py-2 !px-3.5 !text-[0.82rem]">
-              Registrate
+              Regístrate
             </Link>
           </div>
         </nav>
@@ -97,7 +97,7 @@ export function Landing() {
           <p className="lp-reveal mt-7 text-lg sm:text-xl max-w-2xl leading-relaxed"
              style={{ color: "var(--lp-muted)", transitionDelay: "120ms" }}>
             20 segundos de tu voz al día. Nuestra IA lee las señales del agotamiento
-            (tono, palabras, descanso) y te avisa <span style={{ color: "var(--lp-text)" }}>antes</span> de
+            —tono, palabras, descanso— y te avisa <span style={{ color: "var(--lp-text)" }}>antes</span> de
             que el burnout te alcance.
           </p>
 
@@ -178,7 +178,7 @@ export function Landing() {
                 icon: <ChartIcon className="h-6 w-6" />,
                 step: "02",
                 title: "La IA te escucha",
-                txt: "Lee tu voz y tus señales (energía, descanso, carga). No solo qué decís: cómo lo decís.",
+                txt: "Lee tu voz y tus señales —energía, descanso, carga—. No solo qué decís: cómo lo decís.",
               },
               {
                 icon: <HeartPulseIcon className="h-6 w-6" />,
@@ -214,8 +214,8 @@ export function Landing() {
               No es un número más.
             </h2>
             <p className="lp-reveal mt-5 text-lg leading-relaxed" style={{ color: "var(--lp-muted)", transitionDelay: "80ms" }}>
-              Es una lectura diaria de cómo venís, en tu propio lenguaje, que se vuelve tendencia
-              con el tiempo. Cuando algo se desvía, lo ves venir. Y sabés qué hacer.
+              Es una lectura diaria de cómo estás —en tu propio lenguaje— que se vuelve tendencia
+              con el tiempo. Cuando algo se desvía, lo ves venir. Y sabes qué hacer.
             </p>
             <Link href="/signup" className="lp-reveal lp-btn lp-btn-ghost mt-8" style={{ transitionDelay: "140ms" }}>
               Quiero mi lectura
@@ -292,7 +292,7 @@ export function Landing() {
               </h2>
               <p className="mt-4 leading-relaxed max-w-xl" style={{ color: "var(--lp-muted)" }}>
                 Una vista agregada y anónima del estado de tu personal. Detectá focos de carga,
-                redistribuí guardias y reducí rotación y ausentismo, sin invadir la privacidad de nadie.
+                redistribuí guardias y reducí rotación y ausentismo —sin invadir la privacidad de nadie.
               </p>
             </div>
             <Link href="/signup/analista" className="lp-btn lp-btn-ghost shrink-0 w-full md:w-auto">
@@ -309,7 +309,7 @@ export function Landing() {
         <EkgLine className="absolute top-0 inset-x-0 w-full h-24 opacity-30" />
         <div className="mx-auto max-w-6xl px-5 py-28 text-center relative">
           <h2 className="lp-reveal text-3xl sm:text-5xl font-bold tracking-tight">
-            Empezá a cuidar
+            Empieza a cuidar
             <br />
             <span style={{ color: "var(--lp-line)" }}>a quien cuida.</span>
           </h2>

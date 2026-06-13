@@ -4,23 +4,8 @@ import { useActionState } from "react";
 import Link from "next/link";
 import { signupMedico, type SignupState } from "../actions";
 import { HeartPulseIcon } from "@/components/ui/icons";
-import { SelectField } from "@/components/ui/SelectField";
 
 const initial: SignupState = {};
-
-const ESPECIALIDADES = [
-  "Medicina General",
-  "Cardiología",
-  "Cirugía General",
-  "Pediatría",
-  "Ginecología",
-  "Neurología",
-  "Traumatología",
-  "Oncología",
-  "Psiquiatría",
-  "Dermatología",
-  "Otra",
-];
 
 export default function SignupMedicoPage() {
   const [state, formAction, pending] = useActionState(signupMedico, initial);
@@ -48,9 +33,6 @@ export default function SignupMedicoPage() {
           <Field label="Nombre completo" name="fullName" type="text"
                  placeholder="Dr. Martín García" autoComplete="name" />
 
-          <SelectField name="specialty" label="Especialidad" options={ESPECIALIDADES}
-                       placeholder="Seleccioná tu especialidad" />
-
           <Field label="Email" name="email" type="email"
                  placeholder="dr.garcia@clinica.com" autoComplete="email" />
           <Field label="Contraseña" name="password" type="password"
@@ -67,7 +49,7 @@ export default function SignupMedicoPage() {
                      style={{ textTransform: "uppercase" }} />
             </label>
             <p className="mt-1.5 text-xs" style={{ color: "var(--color-text-subtle)" }}>
-              Tu analista tiene este código. Pedíselo si no lo tenés.
+              Tu analista tiene este código. Pídelo si no lo tienes.
             </p>
           </div>
 

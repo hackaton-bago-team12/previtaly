@@ -19,6 +19,17 @@ create policy "Cualquiera puede crear una clinica"
   on public.clinics for insert
   with check (true);
 
+-- ── Función para buscar clínica por código sin restricciones de RLS ─────────
+-- Necesaria para el registro de médicos, que aún no tienen perfil vinculado.
+create or replace function public.get_clinic_by_code(p_code text)
+returns uuid
+language sql
+security definer
+set search_path = public
+as $$
+  select id from public.clinics where code = p_code limit 1;
+$$;
+
 -- ── Función para crear clínica sin restricciones de RLS ─────────────────────
 create or replace function public.create_clinic(p_name text, p_code text)
 returns uuid
