@@ -4,6 +4,8 @@ import { RiskChip } from "@/components/ui/RiskBadge";
 import { SparkLine } from "@/components/ui/PulseChart";
 import { signOutAnalista } from "./actions";
 import { UsersIcon, SignOutIcon } from "@/components/ui/icons";
+import { CAUSAS } from "@/lib/causas";
+import type { CausaKey } from "@/lib/mock-analysis";
 
 type MedicoRow = {
   id: string;
@@ -14,6 +16,7 @@ type MedicoRow = {
     nivel_riesgo: "bajo" | "medio" | "alto";
     fecha: string;
     tendencia: string;
+    causa_principal: CausaKey | null;
   } | null;
   history: number[];
 };
@@ -47,7 +50,7 @@ export default async function AnalistaHomePage() {
     (medicos ?? []).map(async (m) => {
       const { data: latest } = await supabase
         .from("ai_analysis")
-        .select("indice_pulso, nivel_riesgo, fecha, tendencia")
+        .select("indice_pulso, nivel_riesgo, fecha, tendencia, causa_principal")
         .eq("medico_id", m.id)
         .order("created_at", { ascending: false })
         .limit(1)
@@ -74,6 +77,21 @@ export default async function AnalistaHomePage() {
   const highRisk = medicoRows.filter((m) => m.latest_analysis?.nivel_riesgo === "alto").length;
   const midRisk  = medicoRows.filter((m) => m.latest_analysis?.nivel_riesgo === "medio").length;
   const noData   = medicoRows.filter((m) => !m.latest_analysis).length;
+
+  // Por qué sube el equipo: ranking de causas principales del último check-in.
+  const conCausa = medicoRows.filter((m) => m.latest_analysis?.causa_principal);
+  const causaCounts = new Map<CausaKey, number>();
+  for (const m of conCausa) {
+    const c = m.latest_analysis!.causa_principal as CausaKey;
+    causaCounts.set(c, (causaCounts.get(c) ?? 0) + 1);
+  }
+  const causasRanking = [...causaCounts.entries()]
+    .map(([dimension, count]) => ({
+      dimension,
+      count,
+      pct: Math.round((count / conCausa.length) * 100),
+    }))
+    .sort((a, b) => b.count - a.count);
 
   return (
     <div className="px-5 py-8">
@@ -121,6 +139,41 @@ export default async function AnalistaHomePage() {
           <SummaryPill label="Sin datos" value={noData} bg="var(--color-bg)" color="var(--color-text-subtle)" />
           <SummaryPill label="Riesgo medio" value={midRisk} bg="var(--color-risk-mid-bg)" color="var(--color-risk-mid)" />
           <SummaryPill label="Riesgo alto" value={highRisk} bg="var(--color-risk-high-bg)" color="var(--color-risk-high)" />
+        </div>
+      )}
+
+      {/* Por qué sube el equipo — ranking de causas */}
+      {causasRanking.length > 0 && (
+        <div className="card mb-5">
+          <p className="text-xs font-bold uppercase tracking-widest mb-1"
+             style={{ color: "var(--color-text-subtle)" }}>
+            Por qué sube el equipo
+          </p>
+          <p className="text-xs mb-4" style={{ color: "var(--color-text-muted)" }}>
+            Causa principal según el último check-in de cada médico.
+          </p>
+          <div className="space-y-3">
+            {causasRanking.map(({ dimension, count, pct }) => {
+              const info = CAUSAS[dimension];
+              if (!info) return null;
+              const Icon = info.Icon;
+              return (
+                <div key={dimension}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Icon className="h-4 w-4 flex-shrink-0" style={{ color: "var(--color-primary)" }} />
+                    <span className="text-sm flex-1" style={{ color: "var(--color-text)" }}>{info.label}</span>
+                    <span className="text-xs font-semibold" style={{ color: "var(--color-text-muted)" }}>
+                      {count} {count === 1 ? "médico" : "médicos"} · {pct}%
+                    </span>
+                  </div>
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--color-border)" }}>
+                    <div className="h-full rounded-full"
+                         style={{ width: `${pct}%`, background: "var(--color-primary)" }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
