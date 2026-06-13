@@ -67,7 +67,7 @@ export async function signupMedico(
   const email      = String(formData.get("email") ?? "").trim();
   const password   = String(formData.get("password") ?? "");
   const fullName   = String(formData.get("fullName") ?? "").trim();
-  const specialty  = String(formData.get("specialty") ?? "").trim();
+  const specialty  = "Medicina General";
   const clinicCode = String(formData.get("clinicCode") ?? "").trim().toUpperCase();
 
   if (!email || !password || !fullName || !clinicCode)
