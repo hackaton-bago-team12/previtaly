@@ -12,7 +12,7 @@ export function SetupNotice() {
         <code className="rounded bg-amber-100 px-1 py-0.5 font-mono text-xs dark:bg-amber-900/60">
           .env.local
         </code>{" "}
-        y reiniciá el servidor. Mirá el{" "}
+        y reinicia el servidor. Mira el{" "}
         <code className="rounded bg-amber-100 px-1 py-0.5 font-mono text-xs dark:bg-amber-900/60">
           README.md
         </code>
