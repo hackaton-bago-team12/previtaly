@@ -3,9 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 import { RiskChip } from "@/components/ui/RiskBadge";
 import { SparkLine } from "@/components/ui/PulseChart";
 import { signOutAnalista } from "./actions";
-import { UsersIcon, SignOutIcon } from "@/components/ui/icons";
+import { UsersIcon, SignOutIcon, AlertIcon } from "@/components/ui/icons";
 import { CAUSAS } from "@/lib/causas";
 import type { CausaKey } from "@/lib/mock-analysis";
+import { pendiente } from "@/lib/trayectoria";
 
 type MedicoRow = {
   id: string;
@@ -93,6 +94,11 @@ export default async function AnalistaHomePage() {
     }))
     .sort((a, b) => b.count - a.count);
 
+  // Predicción a nivel equipo: médicos con bienestar en descenso (riesgo en alza).
+  const enAlza = medicoRows.filter(
+    (m) => m.latest_analysis && m.history.length >= 3 && pendiente(m.history) < -1,
+  ).length;
+
   return (
     <div className="px-5 py-8">
       {/* Header */}
@@ -139,6 +145,17 @@ export default async function AnalistaHomePage() {
           <SummaryPill label="Sin datos" value={noData} bg="var(--color-bg)" color="var(--color-text-subtle)" />
           <SummaryPill label="Riesgo medio" value={midRisk} bg="var(--color-risk-mid-bg)" color="var(--color-risk-mid)" />
           <SummaryPill label="Riesgo alto" value={highRisk} bg="var(--color-risk-high-bg)" color="var(--color-risk-high)" />
+        </div>
+      )}
+
+      {/* Predicción: médicos en alza */}
+      {enAlza > 0 && (
+        <div className="card mb-5 flex items-center gap-3"
+             style={{ borderColor: "var(--color-risk-mid)", background: "var(--color-risk-mid-bg)" }}>
+          <AlertIcon className="h-5 w-5 flex-shrink-0" style={{ color: "var(--color-risk-mid)" }} />
+          <p className="text-sm" style={{ color: "var(--color-risk-mid)" }}>
+            <strong>{enAlza}</strong> médico{enAlza === 1 ? "" : "s"} con bienestar en descenso esta semana — conviene anticiparse.
+          </p>
         </div>
       )}
 

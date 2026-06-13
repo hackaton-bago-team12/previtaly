@@ -7,6 +7,7 @@ import { HeartPulseIcon, ClipboardIcon } from "@/components/ui/icons";
 import { AnalysisIcon } from "@/components/ui/analysis-icon";
 import { CAUSAS } from "@/lib/causas";
 import type { CausaKey, Factor } from "@/lib/mock-analysis";
+import { calcularTrayectoria } from "@/lib/trayectoria";
 
 export default async function ResultadosPage() {
   const supabase = await createClient();
@@ -47,6 +48,23 @@ export default async function ResultadosPage() {
     .maybeSingle();
 
   const transcripcion = checkin?.transcripcion_voz ?? "";
+
+  // Serie para la proyección de trayectoria (últimos 8, de viejo a nuevo).
+  const { data: serieRows } = await supabase
+    .from("ai_analysis")
+    .select("indice_pulso, estres, carga_acumulada")
+    .eq("medico_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(8);
+  const serie = (serieRows ?? [])
+    .slice()
+    .reverse()
+    .map((r) => ({
+      indicePulso: r.indice_pulso ?? 50,
+      estres: r.estres ?? 50,
+      cargaAcumulada: r.carga_acumulada ?? 50,
+    }));
+  const trayectoria = calcularTrayectoria(serie);
 
   /** Extrae la mayor cantidad de horas mencionada en el texto.
    *  Detecta patrones como "16 horas", "trabajé 12h", "doce horas", etc. */
@@ -308,6 +326,48 @@ export default async function ResultadosPage() {
               <PulseChart data={chartData} />
             </div>
           )}
+
+          {/* Proyección — hacia dónde va tu trayectoria */}
+          {trayectoria.estado !== "sin-datos" && (() => {
+            const color =
+              trayectoria.estado === "critico" || trayectoria.estado === "empeorando"
+                ? "var(--color-risk-high)"
+                : trayectoria.estado === "mejorando"
+                  ? "var(--color-risk-low)"
+                  : "var(--color-text-muted)";
+            const label = {
+              critico: "En zona alta",
+              empeorando: "En aumento",
+              estable: "Estable",
+              mejorando: "Mejorando",
+            }[trayectoria.estado];
+            const proyectaDias = trayectoria.diasHastaAlto != null && trayectoria.diasHastaAlto > 0;
+            return (
+              <div className="card">
+                <p className="text-xs font-bold uppercase tracking-widest mb-3"
+                   style={{ color: "var(--color-text-subtle)" }}>
+                  Proyección
+                </p>
+                <div className="flex items-center gap-3">
+                  {proyectaDias ? (
+                    <div className="flex h-14 w-14 flex-col items-center justify-center rounded-xl flex-shrink-0"
+                         style={{ background: "var(--color-risk-high-bg)" }}>
+                      <span className="text-xl font-bold leading-none" style={{ color: "var(--color-risk-high)" }}>
+                        {trayectoria.diasHastaAlto}
+                      </span>
+                      <span className="text-[10px]" style={{ color: "var(--color-risk-high)" }}>días</span>
+                    </div>
+                  ) : (
+                    <span className="px-3 py-1.5 rounded-full text-xs font-semibold flex-shrink-0"
+                          style={{ color, background: "var(--color-bg)", border: `1px solid ${color}` }}>
+                      {label}
+                    </span>
+                  )}
+                  <p className="text-sm" style={{ color: "var(--color-text-muted)" }}>{trayectoria.mensaje}</p>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* CTAs */}
           <Link href="/medico/sugerencias" className="btn-primary block text-center">
